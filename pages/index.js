@@ -1,15 +1,15 @@
 import * as React from 'react';
-import LayoutUsers from '../components/Layout/Users';
+import LayoutAdmin from '../components/Layout/Admin';
 import { Container, Box, Typography } from '@mui/material';
 
 export default function Index() {
   return (
-    <LayoutUsers>
+    <LayoutAdmin>
       <Container>
         <Box>
-          <Typography>tes</Typography>
+          <Typography>mangats</Typography>
         </Box>
       </Container>
-    </LayoutUsers>
+    </LayoutAdmin>
   );
 }

@@ -15,7 +15,7 @@ export default function About() {
           Next.js example
         </Typography>
         <Button variant="contained" component={Link} noLinkStyle href="/">
-          Go to the main page
+          Go to the main page coba bacobo
         </Button>
         <ProTip />
         <Copyright />

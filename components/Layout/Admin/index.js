@@ -43,9 +43,24 @@ const LayoutUsers = ({ pageTitle, children: content }) => {
       path: '/home',
     },
     {
-      label: 'Skripsi',
+      label: 'Data Mahasiswa',
       icon: <ArticleIcon color="primary" />,
-      path: '/skripsi',
+      path: '/datamahasiswa',
+    },
+    {
+      label: 'Data Dosen',
+      icon: <ArticleIcon color="primary" />,
+      path: '/datadosen',
+    },
+    {
+      label: 'Data Kriteria',
+      icon: <ArticleIcon color="primary" />,
+      path: '/datakriteria',
+    },
+    {
+      label: 'Proses Data',
+      icon: <ArticleIcon color="primary" />,
+      path: '/prosesdata',
     },
   ];
 
