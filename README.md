@@ -1,46 +1,30 @@
-# Next.js example
+Decision Support System with FMADM and SAW in The Case of Determining Thesis Supervisor
 
-## How to use
+This is a [Next.js](https://nextjs.org/)
+This is a [Material UI](https://mui.com/) 
 
-Download the example [or clone the repo](https://github.com/mui/material-ui):
+## Getting Started
 
-<!-- #default-branch-switch -->
+First, run the development server:
 
-```sh
-curl https://codeload.github.com/mui/material-ui/tar.gz/master | tar -xz --strip=2  material-ui-master/examples/nextjs
-cd nextjs
-```
-
-Install it and run:
-
-```sh
-npm install
+```bash
 npm run dev
+# or
+yarn dev
 ```
 
-or:
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-<!-- #default-branch-switch -->
+You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
 
-[![Edit on StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/mui/material-ui/tree/master/examples/nextjs)
+[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
 
-[![Edit on CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/mui/material-ui/tree/master/examples/nextjs)
+The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
-## The idea behind the example
+## Learn More
 
-The project uses [Next.js](https://github.com/vercel/next.js), which is a framework for server-rendered React apps.
-It includes `@mui/material` and its peer dependencies, including `emotion`, the default style engine in MUI v5.
-If you prefer, you can [use styled-components instead](https://mui.com/material-ui/guides/interoperability/#styled-components).
+To learn more about Next.js, take a look at the following resources:
 
-## The link component
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Material UI Documentation](https://mui.com/material-ui/getting-started/installation/) - learn about Material UI.
 
-Next.js has [a custom Link component](https://nextjs.org/docs/api-reference/next/link).
-The example folder provides adapters for usage with MUI.
-More information [in the documentation](https://mui.com/material-ui/guides/routing/#next-js).
-
-## What's next?
-
-<!-- #default-branch-switch -->
-
-You now have a working example project.
-You can head back to the documentation, continuing browsing it from the [templates](https://mui.com/material-ui/getting-started/templates/) section.
