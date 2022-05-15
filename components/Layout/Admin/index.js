@@ -40,27 +40,27 @@ const LayoutUsers = ({ pageTitle, children: content }) => {
     {
       label: 'Home',
       icon: <HomeIcon color="primary" />,
-      path: '/home',
+      path: '/admin/home',
     },
     {
       label: 'Data Mahasiswa',
       icon: <ArticleIcon color="primary" />,
-      path: '/datamahasiswa',
+      path: '/admin/datamahasiswa',
     },
     {
       label: 'Data Dosen',
       icon: <ArticleIcon color="primary" />,
-      path: '/datadosen',
+      path: '/admin/datadosen',
     },
     {
       label: 'Data Kriteria',
       icon: <ArticleIcon color="primary" />,
-      path: '/datakriteria',
+      path: '/admin/datakriteria',
     },
     {
       label: 'Proses Data',
       icon: <ArticleIcon color="primary" />,
-      path: '/prosesdata',
+      path: '/admin/prosesdata',
     },
   ];
 

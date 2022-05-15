@@ -40,12 +40,12 @@ const LayoutUsers = ({ pageTitle, children: content }) => {
     {
       label: 'Home',
       icon: <HomeIcon color="primary" />,
-      path: '/home',
+      path: '/users/home',
     },
     {
       label: 'Skripsi',
       icon: <ArticleIcon color="primary" />,
-      path: '/skripsi',
+      path: '/users/skripsi',
     },
   ];
 
