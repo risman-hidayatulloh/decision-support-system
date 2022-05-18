@@ -1,15 +1,19 @@
 import * as React from 'react';
 //import Login from '../components/Layout/Admin';
 import { Container, Box, Typography } from '@mui/material';
-import Home from '../pages/admin/home';
+import Login from '/pages/login';
+import Navbar from '../components/Layout/Navbar';
 
 export default function Index() {
   return (
-    <Home></Home>
+    //<Login></Login>
     // <Container>
     //   <Box>
     //     <Typography>mangats</Typography>
     //   </Box>
     // </Container>
+    <>
+      <Navbar />
+    </>
   );
 }
