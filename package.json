@@ -18,9 +18,11 @@
     "@mui/icons-material": "latest",
     "@mui/material": "latest",
     "@mui/x-data-grid": "^5.11.0",
+    "@prisma/client": "^3.14.0",
     "formik": "^2.2.9",
     "next": "latest",
     "next-auth": "^4.3.4",
+    "next-connect": "^0.12.2",
     "prop-types": "latest",
     "react": "latest",
     "react-dom": "latest",
@@ -28,6 +30,7 @@
   },
   "devDependencies": {
     "eslint": "latest",
-    "eslint-config-next": "latest"
+    "eslint-config-next": "latest",
+    "prisma": "^3.14.0"
   }
 }

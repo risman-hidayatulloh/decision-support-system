@@ -1,0 +1,102 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model criteria {
+  id_criteria       Int                 @id(map: "pk_36") @default(autoincrement())
+  code_criteria     String              @db.VarChar(255)
+  name_criteria     String              @db.VarChar(255)
+  attribute         String              @db.VarChar(255)
+  weight            Int
+  criteria_lecturer criteria_lecturer[]
+  detail_criteria   detail_criteria[]
+}
+
+model criteria_lecturer {
+  id_criteria_lecturer Int      @id(map: "pk_80") @default(autoincrement())
+  id_criteria          Int
+  id_lecturer          Int
+  criteria             criteria @relation(fields: [id_criteria], references: [id_criteria], onDelete: NoAction, onUpdate: NoAction, map: "fk_88")
+  lecturer             lecturer @relation(fields: [id_lecturer], references: [id_lecturer], onDelete: NoAction, onUpdate: NoAction, map: "fk_101")
+
+  @@index([id_lecturer], map: "fk_103")
+  @@index([id_criteria], map: "fk_90")
+}
+
+model detail_criteria {
+  id_detail_criteria Int      @id(map: "pk_43") @default(autoincrement())
+  description        String   @db.VarChar(255)
+  id_criteria        Int
+  fuzzy              Int
+  variable           String   @db.VarChar(255)
+  criteria           criteria @relation(fields: [id_criteria], references: [id_criteria], onDelete: NoAction, onUpdate: NoAction, map: "fk_69")
+
+  @@index([id_criteria], map: "fk_71")
+}
+
+model lecturer {
+  id_lecturer       Int                 @id(map: "pk_30") @default(autoincrement())
+  nip               Int
+  id_user           Int
+  name_lecturer     String              @db.VarChar(255)
+  is_admin          Boolean
+  user              user                @relation(fields: [id_user], references: [id_user], onDelete: NoAction, onUpdate: NoAction, map: "fk_121")
+  criteria_lecturer criteria_lecturer[]
+  result            result[]
+
+  @@index([id_user], map: "fk_123")
+}
+
+model result {
+  id_result       Int        @id(map: "pk_49") @default(autoincrement())
+  ranking_results Int
+  id_supervisor   Int
+  id_student      Int
+  id_lecturer     Int
+  score           Int
+  lecturer        lecturer   @relation(fields: [id_lecturer], references: [id_lecturer], onDelete: NoAction, onUpdate: NoAction, map: "fk_75")
+  student         student    @relation(fields: [id_student], references: [id_student], onDelete: NoAction, onUpdate: NoAction, map: "fk_107")
+  supervisor      supervisor @relation(fields: [id_supervisor], references: [id_supervisor], onDelete: NoAction, onUpdate: NoAction, map: "fk_116")
+
+  @@index([id_student], map: "fk_109")
+  @@index([id_supervisor], map: "fk_118")
+  @@index([id_lecturer], map: "fk_77")
+}
+
+model student {
+  id_student   Int          @id(map: "pk_14") @default(autoincrement())
+  nim          Int
+  id_user      Int
+  name_student String       @db.VarChar(255)
+  thesis_title String       @db.VarChar(255)
+  expertise    String       @db.VarChar(255)
+  document     String       @db.VarChar(255)
+  user         user         @relation(fields: [id_user], references: [id_user], onDelete: NoAction, onUpdate: NoAction, map: "fk_53")
+  result       result[]
+  supervisor   supervisor[]
+
+  @@index([id_user], map: "fk_55")
+}
+
+model supervisor {
+  id_supervisor Int      @id(map: "pk_21") @default(autoincrement())
+  supervisor    String   @db.VarChar(255)
+  id_student    Int
+  student       student  @relation(fields: [id_student], references: [id_student], onDelete: NoAction, onUpdate: NoAction, map: "fk_63")
+  result        result[]
+
+  @@index([id_student], map: "fk_65")
+}
+
+model user {
+  id_user  Int        @id(map: "pk_5") @default(autoincrement())
+  email    String     @db.VarChar(255)
+  password String     @db.VarChar(255)
+  lecturer lecturer[]
+  student  student[]
+}

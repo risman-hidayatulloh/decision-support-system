@@ -1,7 +1,7 @@
 Decision Support System with FMADM and SAW in The Case of Determining Thesis Supervisor
 
 This is a [Next.js](https://nextjs.org/)
-This is a [Material UI](https://mui.com/) 
+This is a [Material UI](https://mui.com/)
 
 ## Getting Started
 
@@ -27,4 +27,3 @@ To learn more about Next.js, take a look at the following resources:
 
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Material UI Documentation](https://mui.com/material-ui/getting-started/installation/) - learn about Material UI.
-
