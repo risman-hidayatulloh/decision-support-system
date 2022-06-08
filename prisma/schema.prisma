@@ -12,7 +12,7 @@ model criteria {
   code_criteria     String              @db.VarChar(255)
   name_criteria     String              @db.VarChar(255)
   attribute         String              @db.VarChar(255)
-  weight            Int
+  weight            Float
   criteria_lecturer criteria_lecturer[]
   detail_criteria   detail_criteria[]
 }
@@ -32,7 +32,7 @@ model detail_criteria {
   id_detail_criteria Int      @id(map: "pk_43") @default(autoincrement())
   description        String   @db.VarChar(255)
   id_criteria        Int
-  fuzzy              Int
+  fuzzy              Float
   variable           String   @db.VarChar(255)
   criteria           criteria @relation(fields: [id_criteria], references: [id_criteria], onDelete: NoAction, onUpdate: NoAction, map: "fk_69")
 
@@ -58,7 +58,7 @@ model result {
   id_supervisor   Int
   id_student      Int
   id_lecturer     Int
-  score           Int
+  score           Float
   lecturer        lecturer   @relation(fields: [id_lecturer], references: [id_lecturer], onDelete: NoAction, onUpdate: NoAction, map: "fk_75")
   student         student    @relation(fields: [id_student], references: [id_student], onDelete: NoAction, onUpdate: NoAction, map: "fk_107")
   supervisor      supervisor @relation(fields: [id_supervisor], references: [id_supervisor], onDelete: NoAction, onUpdate: NoAction, map: "fk_116")

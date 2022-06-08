@@ -1,0 +1,8 @@
+-- AlterTable
+ALTER TABLE "criteria" ALTER COLUMN "weight" SET DATA TYPE DOUBLE PRECISION;
+
+-- AlterTable
+ALTER TABLE "detail_criteria" ALTER COLUMN "fuzzy" SET DATA TYPE DOUBLE PRECISION;
+
+-- AlterTable
+ALTER TABLE "result" ALTER COLUMN "score" SET DATA TYPE DOUBLE PRECISION;

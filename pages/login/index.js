@@ -25,17 +25,16 @@ const Login = () => {
       password: '',
     },
     validationSchema: yup.object({
-      emailnim: yup
-        .string()
-        .email('Enter a valid Email/NIM')
-        .required('Email/NIM is required'),
+      emailnim: yup.string().required('Email/NIM is required'),
       password: yup
         .string()
-        .min(8, 'Password should be of minimum 8 characters length')
+        // .min(8, 'Password should be of minimum 8 characters length')
         .required('Password is required'),
     }),
     onSubmit: async (values) => {
       const { emailnim, password } = values;
+
+      console.log(emailnim, password);
 
       const signInResult = await signIn('credentials', {
         redirect: false,
@@ -43,24 +42,25 @@ const Login = () => {
         password,
       });
 
-      if (signInResult) {
-        const { error } = signInResult;
-        if (error) {
-          setLoginErrorMessage(error);
-        } else {
-          const { redirect_url } = router.query;
+      // if (signInResult) {
+      //   const { error } = signInResult;
+      //   if (error) {
+      //     setLoginErrorMessage(error);
+      //   } else {
+      //     const { redirect_url } = router.query;
 
-          if (redirect_url) {
-            router.push(`${redirect_url}`);
-          } else {
-            router.push('/redirect');
-          }
-        }
-      } else {
-        setLoginErrorMessage('Authentication error');
-      }
+      //     if (redirect_url) {
+      //       router.push(`${redirect_url}`);
+      //     } else {
+      //       router.push('/redirect');
+      //     }
+      //   }
+      // } else {
+      //   setLoginErrorMessage('Authentication error');
+      // }
     },
   });
+
   return (
     <Box
       sx={{
@@ -110,6 +110,14 @@ const Login = () => {
               value={formik.values.emailnim}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
+              error={formik.touched.emailnim && Boolean(formik.errors.emailnim)}
+              helperText={
+                formik.touched.emailnim
+                  ? formik.errors.emailnim
+                    ? formik.errors.emailnim
+                    : ' '
+                  : ' '
+              }
             />
 
             <TextField
@@ -122,6 +130,14 @@ const Login = () => {
               value={formik.values.password}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
+              error={formik.touched.password && Boolean(formik.errors.password)}
+              helperText={
+                formik.touched.password
+                  ? formik.errors.password
+                    ? formik.errors.password
+                    : ' '
+                  : ' '
+              }
             />
 
             <Box
@@ -132,11 +148,7 @@ const Login = () => {
                 gap: 2,
               }}
             >
-              <Button
-                type="submit"
-                variant="contained"
-                onClick={() => router.push('users/home')}
-              >
+              <Button type="submit" variant="contained">
                 Login
               </Button>
             </Box>
