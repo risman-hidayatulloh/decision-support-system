@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
@@ -15,56 +16,101 @@ export default NextAuth({
       async authorize(credentials) {
         const { emailnim, password } = credentials;
         try {
-          await login(emailnim, password);
+          const data = await login(emailnim, password);
+          return data;
         } catch (error) {
-          console.log(error.message);
+          throw Error(error.message);
         }
       },
     }),
   ],
+  secret: '8k9ZvceDzkfN5EbM1tS94KctPt7u2T7dGCiCAgdBjqo=',
+  callbacks: {
+    async session({ session, token }) {
+      if (token) {
+        return { ...session, ...token };
+      }
+      return session;
+    },
+    async jwt({ token, account, user }) {
+      if (account && user) {
+        return { ...token, ...account, ...user };
+      }
+      return token;
+    },
+  },
 });
 
 const login = async (emailnim, password) => {
-  const user = await prisma.user.findFirst({
+  const lecturer = await prisma.lecturer.findFirst({
     where: {
-      email: emailnim,
-      password,
+      OR: [
+        {
+          user: {
+            email: emailnim,
+            password,
+          },
+          is_admin: true,
+        },
+        {
+          nip: emailnim,
+          user: {
+            password,
+          },
+          is_admin: true,
+        },
+      ],
+    },
+    include: {
+      user: {
+        select: {
+          email: true,
+          id_user: true,
+        },
+      },
     },
   });
-  if (user) {
-    if (user.is_admin) {
-      return {
-        user,
-        redirect: '/admin',
-      };
-    }
-    const student = await prisma.student.findFirst({
-      where: {
-        id_user: user.id_user,
-      },
-    });
 
-    return { user, student };
-  } else {
-    const user = await prisma.user.findFirst({
-      where: {
-        password,
-      },
-    });
-    if (user) {
-      const student = await prisma.student.findFirst({
-        where: {
-          nim: parseInt(emailnim),
-          id_user: user.id_user,
+  const student = await prisma.student.findFirst({
+    where: {
+      OR: [
+        {
+          user: {
+            email: emailnim,
+            password,
+          },
         },
-      });
-      if (student) {
-        return { user, student };
-      } else {
-        throw Error('Email/NIM atau Password salah');
-      }
-    } else {
-      throw Error('Email/NIM atau Password salah');
-    }
+        {
+          nim: emailnim,
+          user: {
+            password,
+          },
+        },
+      ],
+    },
+    include: {
+      user: {
+        select: {
+          email: true,
+          id_user: true,
+        },
+      },
+    },
+  });
+
+  if (student) {
+    return {
+      ...student,
+      type: 'student',
+    };
   }
+
+  if (lecturer) {
+    return {
+      ...lecturer,
+      type: 'lecturer',
+    };
+  }
+
+  throw new Error('Invalid email/nim or password');
 };

@@ -41,7 +41,7 @@ model detail_criteria {
 
 model lecturer {
   id_lecturer       Int                 @id(map: "pk_30") @default(autoincrement())
-  nip               Int
+  nip               String              @db.VarChar(255)
   id_user           Int
   name_lecturer     String              @db.VarChar(255)
   is_admin          Boolean
@@ -70,7 +70,7 @@ model result {
 
 model student {
   id_student   Int          @id(map: "pk_14") @default(autoincrement())
-  nim          Int
+  nim          String       @db.VarChar(255)
   id_user      Int
   name_student String       @db.VarChar(255)
   thesis_title String       @db.VarChar(255)

@@ -10,6 +10,7 @@ import {
   Button,
   Divider,
   TextField,
+  Alert,
 } from '@mui/material';
 
 import { Form, useFormik } from 'formik';
@@ -37,27 +38,19 @@ const Login = () => {
       console.log(emailnim, password);
 
       const signInResult = await signIn('credentials', {
-        redirect: false,
         emailnim,
         password,
+        redirect: false,
       });
 
-      // if (signInResult) {
-      //   const { error } = signInResult;
-      //   if (error) {
-      //     setLoginErrorMessage(error);
-      //   } else {
-      //     const { redirect_url } = router.query;
-
-      //     if (redirect_url) {
-      //       router.push(`${redirect_url}`);
-      //     } else {
-      //       router.push('/redirect');
-      //     }
-      //   }
-      // } else {
-      //   setLoginErrorMessage('Authentication error');
-      // }
+      if (signInResult) {
+        const { error } = signInResult;
+        if (error) {
+          setLoginErrorMessage(error);
+        } else {
+          router.push('/redirect');
+        }
+      }
     },
   });
 
@@ -139,6 +132,10 @@ const Login = () => {
                   : ' '
               }
             />
+
+            {loginErrorMessage && (
+              <Alert severity="warning">{loginErrorMessage}</Alert>
+            )}
 
             <Box
               sx={{
