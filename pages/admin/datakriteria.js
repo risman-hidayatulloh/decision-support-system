@@ -12,7 +12,8 @@ import { deleteCriteria, getCriterias } from '../../lib/fetcher/criteria';
 import { useRouter } from 'next/router';
 import AddCriteria from '../../sections/datakriteria/AddCriteria';
 import EditCriteria from '../../sections/datakriteria/EditCriteria';
-import DetailCriteria from '../../sections/datakriteria/DetailCriteria';
+import DetailCriteria from '../../sections/detailkriteria/DetailCriteria';
+import { useSWRConfig } from 'swr';
 
 const columns = [
   {
@@ -91,6 +92,8 @@ const columns = [
           onClick={() => {
             try {
               deleteCriteria(cellValues.id);
+              window.location.reload();
+              //mutate('/api/criteria', getCriterias, false);
             } catch (error) {
               console.log(error);
             }
@@ -107,10 +110,11 @@ const columns = [
 
 const DataKriteria = () => {
   const router = useRouter();
-
   const { detail, edit, add } = router.query;
 
   const { data } = useSWR('/api/criteria', getCriterias);
+  const { mutate } = useSWRConfig();
+  mutate('/api/criteria', getCriterias, false);
 
   return (
     <>

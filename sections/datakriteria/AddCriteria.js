@@ -12,6 +12,8 @@ const AddCriteria = () => {
 
   const { mutate } = useSWRConfig();
 
+  const { add } = router.query;
+
   const formik = useFormik({
     initialValues: {
       code_criteria: '',
@@ -31,6 +33,7 @@ const AddCriteria = () => {
         mutate('/api/criteria');
       } catch (error) {
         console.log(error);
+        console.log(error.response.data);
       }
     },
   });
@@ -46,6 +49,7 @@ const AddCriteria = () => {
         }}
         noValidate
         autoComplete="off"
+        onSubmit={formik.handleSubmit}
       >
         <TextField
           id="code_criteria"
@@ -107,6 +111,8 @@ const AddCriteria = () => {
           label="Bobot"
           variant="standard"
           fullWidth
+          type="number"
+          step="any"
           value={formik.values.weight}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
