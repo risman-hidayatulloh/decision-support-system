@@ -58,12 +58,8 @@ const columns = [
         <Button
           variant="contained"
           color="primary"
-          onClick={() => {
-            try {
-              deleteStudent(cellValues.id_student);
-            } catch (error) {
-              console.log(error);
-            }
+          onClick={(event) => {
+            handleClick(event, cellValues);
           }}
         >
           detail
@@ -84,6 +80,7 @@ const columns = [
           onClick={() => {
             try {
               deleteStudent(cellValues.id);
+              window.location.reload();
             } catch (error) {
               console.log(error);
             }

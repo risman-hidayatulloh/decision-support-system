@@ -62,6 +62,7 @@ const columns = [
           onClick={() => {
             try {
               deleteLecturer(cellValues.id);
+              window.location.reload();
             } catch (error) {
               console.log(error);
             }
