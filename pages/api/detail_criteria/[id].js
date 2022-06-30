@@ -11,6 +11,7 @@ const handler = nc()
         id_detail_criteria: Number(id),
       },
     });
+    //console.log(detail_criteria);
     res.json(detail_criteria);
   })
   .patch(async (req, res) => {

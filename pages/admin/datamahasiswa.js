@@ -101,17 +101,26 @@ const DataMahasiswa = () => {
   return (
     <>
       <LayoutAdmin pageTitle="Data Mahasiswa">
-        <div style={{ height: 500, width: '100%' }}>
-          <DataGrid
-            rows={data ? data : []}
-            columns={columns}
-            pageSize={5}
-            rowsPerPageOptions={[]}
-            //checkboxSelection
-            disableSelectionOnClick
-            getRowId={(row) => row.id_student}
-          />
-        </div>
+        <>
+          {/* <Button
+            variant="contained"
+            sx={{ mb: 2 }}
+            onClick={() => router.push('/admin/datakriteria?add=true')}
+          >
+            Tambah Mahasiswa
+          </Button> */}
+          <div style={{ height: 640, width: '100%' }}>
+            <DataGrid
+              rows={data ? data : []}
+              columns={columns}
+              pageSize={10}
+              rowsPerPageOptions={[]}
+              //checkboxSelection
+              disableSelectionOnClick
+              getRowId={(row) => row.id_student}
+            />
+          </div>
+        </>
       </LayoutAdmin>
     </>
   );

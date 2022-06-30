@@ -34,7 +34,7 @@ model detail_criteria {
   id_criteria        Int
   fuzzy              Float
   variable           String   @db.VarChar(255)
-  criteria           criteria @relation(fields: [id_criteria], references: [id_criteria], onDelete: NoAction, onUpdate: NoAction, map: "fk_69")
+  criteria           criteria @relation(fields: [id_criteria], references: [id_criteria], onDelete: Cascade, onUpdate: NoAction, map: "fk_69")
 
   @@index([id_criteria], map: "fk_71")
 }
