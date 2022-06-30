@@ -6,10 +6,12 @@ import { useRouter } from 'next/router';
 import LayoutAdmin from '/components/Layout/Admin';
 import {
   getDetailByIdCriteria,
-  getDetail_Criterias,
+  deleteDetail_Criteria,
 } from '../../../../../lib/fetcher/detail_criteria';
-import useSWR from 'swr';
 import EditDetail from '../../../../../sections/detailkriteria/EditDetailCriteria';
+import AddDetail from '../../../../../sections/detailkriteria/AddDetailCriteria';
+import useSWR, { mutate } from 'swr';
+import { useSWRConfig } from 'swr';
 
 const columns = [
   //{ field: 'id', headerName: 'ID', width: 90 },
@@ -54,6 +56,33 @@ const columns = [
     width: 80,
     editable: true,
   },
+  {
+    field: 'delete',
+    headerName: 'Delete',
+    renderCell: (cellValues) => {
+      return (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => {
+            try {
+              deleteDetail_Criteria(cellValues.id);
+              mutate(
+                `/api/criteria/${cellValues.row.id_criteria}/detail`,
+                getDetailByIdCriteria(cellValues.id)
+              );
+            } catch (error) {
+              console.log(error);
+            }
+          }}
+        >
+          delete
+        </Button>
+      );
+    },
+    width: 80,
+    editable: true,
+  },
 ];
 
 const DetailKriteria = () => {
@@ -63,6 +92,11 @@ const DetailKriteria = () => {
   const { data } = useSWR(
     id_criteria ? `/api/criteria/${id_criteria}/detail` : null,
     () => getDetailByIdCriteria(id_criteria)
+  );
+  const { mutate } = useSWRConfig();
+  mutate(
+    `/api/criteria/${id_criteria}/detail`,
+    getDetailByIdCriteria(id_criteria)
   );
 
   return (
@@ -78,7 +112,11 @@ const DetailKriteria = () => {
               <Button
                 variant="contained"
                 sx={{ mb: 2 }}
-                onClick={() => router.push('/admin/datakriteria?add=true')}
+                onClick={() =>
+                  router.push(
+                    `/admin/datakriteria/${id_criteria}/detail?add=true`
+                  )
+                }
               >
                 Tambah Detail Kriteria
               </Button>

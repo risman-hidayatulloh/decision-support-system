@@ -2,7 +2,7 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import LayoutAdmin from '/components/Layout/Admin';
 import { DataGrid } from '@mui/x-data-grid';
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 import { deleteCriteria, getCriterias } from '../../../lib/fetcher/criteria';
 import { useRouter } from 'next/router';
 import AddCriteria from '../../../sections/datakriteria/AddCriteria';
@@ -86,8 +86,7 @@ const columns = [
           onClick={() => {
             try {
               deleteCriteria(cellValues.id);
-              window.location.reload();
-              //mutate('/api/criteria', getCriterias, false);
+              mutate('/api/criteria', getCriterias);
             } catch (error) {
               console.log(error);
             }
@@ -108,7 +107,7 @@ const DataKriteria = () => {
 
   const { data } = useSWR('/api/criteria', getCriterias);
   const { mutate } = useSWRConfig();
-  mutate('/api/criteria', getCriterias, false);
+  mutate('/api/criteria', getCriterias);
 
   return (
     <>

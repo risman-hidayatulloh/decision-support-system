@@ -9,10 +9,9 @@ const handler = nc()
     res.json(detail_criteria);
   })
   .post(async (req, res) => {
-    const { id_detail_criteria, description, fuzzy, variable } = req.body;
+    const { description, fuzzy, variable } = req.body;
     const detail_criteria = await prisma.detail_criteria.create({
       data: {
-        id_detail_criteria,
         description,
         fuzzy,
         variable,

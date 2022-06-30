@@ -85,11 +85,17 @@ const Login = () => {
               boxShadow: 4,
             }}
           >
-            <Typography sx={{ textAlign: 'center' }}>
-              <Typography>SPK PENENTUAN DOSEN PEMBIMBING SKRIPSI</Typography>
-              <Typography>ILMU KOMPUTER - FPMIPA</Typography>
-              <Typography>UNIVERSITAS PENDIDIKAN INDONESIA</Typography>
-            </Typography>
+            <Box sx={{ width: '100%', maxWidth: 500, textAlign: 'center' }}>
+              <Typography variant="h6" gutterBottom component="div">
+                SPK PENENTUAN DOSEN PEMBIMBING SKRIPSI
+              </Typography>
+              <Typography variant="body1" display="block" gutterBottom>
+                ILMU KOMPUTER - FPMIPA
+              </Typography>
+              <Typography variant="body1" display="block" gutterBottom>
+                UNIVERSITAS PENDIDIKAN INDONESIA
+              </Typography>
+            </Box>
 
             <Divider variant="middle" />
 
