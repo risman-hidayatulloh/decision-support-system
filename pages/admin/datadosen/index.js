@@ -35,8 +35,8 @@ const columns = [
     editable: true,
   },
   {
-    field: 'detail',
-    headerName: 'Detail',
+    field: 'criteria',
+    headerName: 'Kriteria',
     renderCell: (cellValues) => {
       const router = useRouter();
       return (
@@ -44,14 +44,14 @@ const columns = [
           variant="contained"
           color="primary"
           onClick={() => {
-            router.push(`/admin/datadosen/${cellValues.id}/detail`);
+            router.push(`/admin/datadosen/${cellValues.id}/criteria`);
           }}
         >
-          detail
+          Criteria
         </Button>
       );
     },
-    width: 80,
+    width: 100,
     editable: true,
   },
   {

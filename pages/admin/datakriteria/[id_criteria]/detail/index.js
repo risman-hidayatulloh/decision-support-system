@@ -101,7 +101,7 @@ const DetailKriteria = () => {
 
   return (
     <>
-      <LayoutAdmin pageTitle="Detail Kriteria">
+      <LayoutAdmin pageTitle="Data Kriteria > Detail">
         <>
           {add ? (
             <AddDetail />

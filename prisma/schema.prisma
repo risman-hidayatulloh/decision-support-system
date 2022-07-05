@@ -85,7 +85,8 @@ model student {
 
 model supervisor {
   id_supervisor Int      @id(map: "pk_21") @default(autoincrement())
-  supervisor    String   @db.VarChar(255)
+  supervisor1   String   @db.VarChar(255)
+  supervisor2   String   @db.VarChar(255)
   id_student    Int
   student       student  @relation(fields: [id_student], references: [id_student], onDelete: NoAction, onUpdate: NoAction, map: "fk_63")
   result        result[]
