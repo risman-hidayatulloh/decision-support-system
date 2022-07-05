@@ -8,8 +8,8 @@ import {
   getDetailByIdCriteria,
   deleteDetail_Criteria,
 } from '../../../../../lib/fetcher/detail_criteria';
-import EditDetail from '../../../../../sections/detailkriteria/EditDetailCriteria';
-import AddDetail from '../../../../../sections/detailkriteria/AddDetailCriteria';
+import EditDetail from '../../../../../sections/criteriadetail/EditDetailCriteria';
+import AddDetail from '../../../../../sections/criteriadetail/AddDetailCriteria';
 import useSWR, { mutate } from 'swr';
 import { useSWRConfig } from 'swr';
 

@@ -1,9 +1,12 @@
-import { Typography } from '@mui/material';
+import * as React from 'react';
+import { useRouter } from 'next/router';
 import LayoutAdmin from '/components/Layout/Admin';
+import Button from '@mui/material/Button';
 import { DataGrid } from '@mui/x-data-grid';
-import { Button } from '@material-ui/core';
-import useSWR from 'swr';
 import { deleteStudent, getStudents } from '../../lib/fetcher/student';
+import AddMahasiswa from '../../sections/student/AddMahasiswa';
+import EditMahasiswa from '../../sections/student/EditMahasiswa';
+import useSWR, { useSWRConfig } from 'swr';
 
 const columns = [
   { field: 'nim', headerName: 'NIM', width: 80 },
@@ -27,7 +30,7 @@ const columns = [
   },
   {
     field: 'document',
-    headerName: 'File Proposal .pdf',
+    headerName: 'File Dokument .pdf',
     width: 150,
     editable: true,
   },
@@ -35,13 +38,14 @@ const columns = [
     field: 'edit',
     headerName: 'Edit',
     renderCell: (cellValues) => {
+      const router = useRouter();
       return (
         <Button
           variant="contained"
           color="primary"
-          onClick={(event) => {
-            handleClick(event, cellValues);
-          }}
+          onClick={() =>
+            router.push(`/admin/datamahasiswa?edit=${cellValues.id}`)
+          }
         >
           Edit
         </Button>
@@ -51,28 +55,30 @@ const columns = [
     editable: true,
   },
   {
-    field: 'detail',
-    headerName: 'Detail',
+    field: 'supervisor',
+    headerName: 'Supervisor',
     renderCell: (cellValues) => {
+      const router = useRouter();
       return (
         <Button
           variant="contained"
           color="primary"
-          onClick={(event) => {
-            handleClick(event, cellValues);
+          onClick={() => {
+            router.push(`/admin/datamahasiswa/${cellValues.id}/supervisor`);
           }}
         >
-          detail
+          Supervisor
         </Button>
       );
     },
-    width: 80,
+    width: 120,
     editable: true,
   },
   {
     field: 'delete',
     headerName: 'Delete',
     renderCell: (cellValues) => {
+      const { mutate } = useSWRConfig();
       return (
         <Button
           variant="contained"
@@ -80,6 +86,7 @@ const columns = [
           onClick={() => {
             try {
               deleteStudent(cellValues.id);
+              mutate('/api/student', getStudents);
               window.location.reload();
             } catch (error) {
               console.log(error);
@@ -96,30 +103,42 @@ const columns = [
 ];
 
 const DataMahasiswa = () => {
+  const router = useRouter();
+  const { add, edit } = router.query;
   const { data } = useSWR('/api/student', getStudents);
+  const { mutate } = useSWRConfig();
+  mutate('/api/student', getStudents);
 
   return (
     <>
       <LayoutAdmin pageTitle="Data Mahasiswa">
         <>
-          {/* <Button
-            variant="contained"
-            sx={{ mb: 2 }}
-            onClick={() => router.push('/admin/datakriteria?add=true')}
-          >
-            Tambah Mahasiswa
-          </Button> */}
-          <div style={{ height: 640, width: '100%' }}>
-            <DataGrid
-              rows={data ? data : []}
-              columns={columns}
-              pageSize={10}
-              rowsPerPageOptions={[]}
-              //checkboxSelection
-              disableSelectionOnClick
-              getRowId={(row) => row.id_student}
-            />
-          </div>
+          {add ? (
+            <AddMahasiswa />
+          ) : edit ? (
+            <EditMahasiswa />
+          ) : (
+            <>
+              {/* <Button
+                variant="contained"
+                sx={{ mb: 2 }}
+                onClick={() => router.push('/admin/datamahasiswa?add=true')}
+              >
+                Tambah Mahasiswa
+              </Button> */}
+              <div style={{ height: 640, width: '100%' }}>
+                <DataGrid
+                  rows={data ? data : []}
+                  columns={columns}
+                  pageSize={10}
+                  rowsPerPageOptions={[]}
+                  //checkboxSelection
+                  disableSelectionOnClick
+                  getRowId={(row) => row.id_student}
+                />
+              </div>
+            </>
+          )}
         </>
       </LayoutAdmin>
     </>

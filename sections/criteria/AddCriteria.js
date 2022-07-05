@@ -1,22 +1,18 @@
 import { TextField, Box, Button, Container } from '@mui/material';
-import { editCriteria, getCriteria } from '../../lib/fetcher/criteria';
+import { addCriteria } from '../../lib/fetcher/criteria';
 import { useRouter } from 'next/router';
 import * as yup from 'yup';
-import useSWR from 'swr';
 import { useFormik } from 'formik';
 import { useEffect } from 'react';
-import { useSWRConfig } from 'swr';
+import useSWR, { useSWRConfig } from 'swr';
 
-const EditCriteria = () => {
+const AddCriteria = () => {
   const router = useRouter();
-
+  const { add } = router.query;
   const { mutate } = useSWRConfig();
-
-  const { edit } = router.query;
 
   const formik = useFormik({
     initialValues: {
-      id_criteria: 0,
       code_criteria: '',
       attribute: '',
       name_criteria: '',
@@ -29,26 +25,15 @@ const EditCriteria = () => {
     }),
     onSubmit: async (values) => {
       try {
-        await editCriteria(values.id_criteria, values);
+        await addCriteria(values);
         router.back();
         mutate('/api/criteria');
       } catch (error) {
         console.log(error);
+        console.log(error.response.data);
       }
     },
   });
-
-  const { data } = useSWR(edit ? `/api/criteria/${edit}` : null, () =>
-    getCriteria(edit)
-  );
-
-  const { setValues } = formik;
-
-  useEffect(() => {
-    if (data) {
-      setValues(data);
-    }
-  }, [data]);
 
   return (
     <Container maxWidth="md">
@@ -63,6 +48,25 @@ const EditCriteria = () => {
         autoComplete="off"
         onSubmit={formik.handleSubmit}
       >
+        <TextField
+          id="code_criteria"
+          label="Kode Kriteria"
+          variant="standard"
+          fullWidth
+          value={formik.values.code_criteria}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={
+            formik.touched.code_criteria && Boolean(formik.errors.code_criteria)
+          }
+          helperText={
+            formik.touched.code_criteria
+              ? formik.errors.code_criteria
+                ? formik.errors.code_criteria
+                : ' '
+              : ' '
+          }
+        />
         <TextField
           id="name_criteria"
           label="Nama Kriteria"
@@ -82,7 +86,6 @@ const EditCriteria = () => {
               : ' '
           }
         />
-
         <TextField
           id="attribute"
           label="Attribute"
@@ -100,13 +103,13 @@ const EditCriteria = () => {
               : ' '
           }
         />
-
         <TextField
           id="weight"
           label="Bobot"
           variant="standard"
           fullWidth
           type="number"
+          step="any"
           value={formik.values.weight}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
@@ -119,13 +122,12 @@ const EditCriteria = () => {
               : ' '
           }
         />
-
         <Button type="submit" variant="contained" fullWidth>
-          Ubah
+          Tambahkan
         </Button>
       </Box>
     </Container>
   );
 };
 
-export default EditCriteria;
+export default AddCriteria;

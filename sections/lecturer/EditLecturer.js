@@ -1,5 +1,5 @@
 import { TextField, Box, Button, Container } from '@mui/material';
-import { addDetail_Criteria } from '../../lib/fetcher/detail_criteria';
+import { editLecturer, getLecturer } from '../../lib/fetcher/lecturer';
 import { useRouter } from 'next/router';
 import * as yup from 'yup';
 import useSWR from 'swr';
@@ -7,36 +7,46 @@ import { useFormik } from 'formik';
 import { useEffect } from 'react';
 import { useSWRConfig } from 'swr';
 
-const AddDetailCriteria = () => {
+const EditLecturer = () => {
   const router = useRouter();
 
   const { mutate } = useSWRConfig();
 
-  const { id_criteria } = router.query;
+  const { edit } = router.query;
 
   const formik = useFormik({
     initialValues: {
-      description: '',
-      fuzzy: 0,
-      variable: '',
+      id_lecturer: 0,
+      nip: '',
+      name_lecturer: '',
+      is_admin: '',
     },
     validationSchema: yup.object({
-      description: yup.string().required('Keterangan harus diisi'),
-      fuzzy: yup.number().required('Fuzzy harus diisi'),
-      variable: yup.string().required('Variabel harus diisi'),
+      nip: yup.string().required('NIP is required'),
+      name_lecturer: yup.string().required('Name is required'),
     }),
     onSubmit: async (values) => {
       try {
-        await addDetail_Criteria(id_criteria, values);
+        await editLecturer(values.id_lecturer, values);
         router.back();
-        mutate(`/api/criteria/${id_criteria}/detail`);
+        mutate('/api/lecturer');
       } catch (error) {
         console.log(error);
-        console.log(error.response.data);
       }
-      console.log(id_kriteria, values);
     },
   });
+
+  const { data } = useSWR(edit ? `/api/lecturer/${edit}` : null, () =>
+    getLecturer(edit)
+  );
+
+  const { setValues } = formik;
+
+  useEffect(() => {
+    if (data) {
+      setValues(data);
+    }
+  }, [data]);
 
   return (
     <Container maxWidth="md">
@@ -52,66 +62,67 @@ const AddDetailCriteria = () => {
         onSubmit={formik.handleSubmit}
       >
         <TextField
-          id="description"
-          label="Keterangan"
+          id="nip"
+          label="NIP/NIDN"
           variant="standard"
           fullWidth
-          value={formik.values.description}
+          value={formik.values.nip}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.nip && Boolean(formik.errors.nip)}
+          helperText={
+            formik.touched.nip
+              ? formik.errors.nip
+                ? formik.errors.nip
+                : ' '
+              : ' '
+          }
+        />
+
+        <TextField
+          id="name_lecturer"
+          label="Nama Dosen"
+          variant="standard"
+          fullWidth
+          value={formik.values.name_lecturer}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           error={
-            formik.touched.description && Boolean(formik.errors.description)
+            formik.touched.name_lecturer && Boolean(formik.errors.name_lecturer)
           }
           helperText={
-            formik.touched.description
-              ? formik.errors.description
-                ? formik.errors.description
+            formik.touched.name_lecturer
+              ? formik.errors.name_lecturer
+                ? formik.errors.name_lecturer
                 : ' '
               : ' '
           }
         />
+
         <TextField
-          id="fuzzy"
-          label="Fuzzy"
+          id="is_admin"
+          label="Admin"
           variant="standard"
           fullWidth
-          type="number"
-          step="any"
-          value={formik.values.fuzzy}
+          value={formik.values.is_admin}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={formik.touched.fuzzy && Boolean(formik.errors.fuzzy)}
+          error={formik.touched.is_admin && Boolean(formik.errors.is_admin)}
           helperText={
-            formik.touched.fuzzy
-              ? formik.errors.fuzzy
-                ? formik.errors.fuzzy
+            formik.touched.is_admin
+              ? formik.errors.is_admin
+                ? formik.errors.is_admin
                 : ' '
               : ' '
           }
         />
-        <TextField
-          id="variable"
-          label="Variabel"
-          variant="standard"
-          fullWidth
-          value={formik.values.variable}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.variable && Boolean(formik.errors.variable)}
-          helperText={
-            formik.touched.variable
-              ? formik.errors.variable
-                ? formik.errors.variable
-                : ' '
-              : ' '
-          }
-        />
+
         <Button type="submit" variant="contained" fullWidth>
-          Tambahkan
+          Ubah
         </Button>
       </Box>
     </Container>
   );
 };
 
-export default AddDetailCriteria;
+export default EditLecturer;

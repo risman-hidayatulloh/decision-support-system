@@ -1,36 +1,37 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
-import LayoutAdmin from '/components/Layout/Admin';
-import { DataGrid } from '@mui/x-data-grid';
-import { deleteCriteria, getCriterias } from '../../../lib/fetcher/criteria';
 import { useRouter } from 'next/router';
-import AddCriteria from '../../../sections/criteria/AddCriteria';
-import EditCriteria from '../../../sections/criteria/EditCriteria';
+import LayoutAdmin from '/components/Layout/Admin';
+import Button from '@mui/material/Button';
+import { DataGrid } from '@mui/x-data-grid';
+import { deleteStudent, getStudents } from '../../../lib/fetcher/student';
+import AddMahasiswa from '../../../sections/student/AddMahasiswa';
+import EditMahasiswa from '../../../sections/student/EditMahasiswa';
 import useSWR, { useSWRConfig } from 'swr';
 
 const columns = [
+  { field: 'nim', headerName: 'NIM', width: 80 },
   {
-    field: 'code_criteria',
-    headerName: 'Code Kriteria',
-    width: 100,
+    field: 'name_student',
+    headerName: 'Nama Mahasiswa',
+    width: 200,
     editable: true,
   },
   {
-    field: 'name_criteria',
-    headerName: 'Nama Kriteria',
-    width: 250,
+    field: 'thesis_title',
+    headerName: 'Judul Skripsi',
+    width: 500,
     editable: true,
   },
   {
-    field: 'attribute',
-    headerName: 'Attribute',
-    width: 100,
+    field: 'expertise',
+    headerName: 'Bidang Keahlian',
+    width: 200,
     editable: true,
   },
   {
-    field: 'weight',
-    headerName: 'Bobot',
-    width: 100,
+    field: 'document',
+    headerName: 'File Dokument .pdf',
+    width: 150,
     editable: true,
   },
   {
@@ -43,7 +44,7 @@ const columns = [
           variant="contained"
           color="primary"
           onClick={() =>
-            router.push(`/admin/datakriteria?edit=${cellValues.id}`)
+            router.push(`/admin/datamahasiswa?edit=${cellValues.id}`)
           }
         >
           Edit
@@ -54,8 +55,8 @@ const columns = [
     editable: true,
   },
   {
-    field: 'detail',
-    headerName: 'Detail',
+    field: 'supervisor',
+    headerName: 'Supervisor',
     renderCell: (cellValues) => {
       const router = useRouter();
       return (
@@ -63,14 +64,14 @@ const columns = [
           variant="contained"
           color="primary"
           onClick={() => {
-            router.push(`/admin/datakriteria/${cellValues.id}/detail`);
+            router.push(`/admin/datamahasiswa/${cellValues.id}/supervisor`);
           }}
         >
-          Detail
+          Supervisor
         </Button>
       );
     },
-    width: 80,
+    width: 120,
     editable: true,
   },
   {
@@ -84,8 +85,8 @@ const columns = [
           color="primary"
           onClick={() => {
             try {
-              deleteCriteria(cellValues.id);
-              mutate('/api/criteria', getCriterias);
+              deleteStudent(cellValues.id);
+              mutate('/api/student', getStudents);
               window.location.reload();
             } catch (error) {
               console.log(error);
@@ -101,38 +102,39 @@ const columns = [
   },
 ];
 
-const DataKriteria = () => {
+const DataMahasiswa = () => {
   const router = useRouter();
-  const { edit, add } = router.query;
-  const { data } = useSWR('/api/criteria', getCriterias);
+  const { add, edit } = router.query;
+  const { data } = useSWR('/api/student', getStudents);
   const { mutate } = useSWRConfig();
-  mutate('/api/criteria', getCriterias);
+  mutate('/api/student', getStudents);
 
   return (
     <>
-      <LayoutAdmin pageTitle="Data Kriteria">
+      <LayoutAdmin pageTitle="Data Mahasiswa">
         <>
           {add ? (
-            <AddCriteria />
+            <AddMahasiswa />
           ) : edit ? (
-            <EditCriteria />
+            <EditMahasiswa />
           ) : (
             <>
-              <Button
+              {/* <Button
                 variant="contained"
                 sx={{ mb: 2 }}
-                onClick={() => router.push('/admin/datakriteria?add=true')}
+                onClick={() => router.push('/admin/datamahasiswa?add=true')}
               >
-                Tambah Kriteria
-              </Button>
+                Tambah Mahasiswa
+              </Button> */}
               <div style={{ height: 640, width: '100%' }}>
                 <DataGrid
                   rows={data ? data : []}
                   columns={columns}
                   pageSize={10}
                   rowsPerPageOptions={[]}
+                  //checkboxSelection
                   disableSelectionOnClick
-                  getRowId={(row) => row.id_criteria}
+                  getRowId={(row) => row.id_student}
                 />
               </div>
             </>
@@ -143,4 +145,4 @@ const DataKriteria = () => {
   );
 };
 
-export default DataKriteria;
+export default DataMahasiswa;

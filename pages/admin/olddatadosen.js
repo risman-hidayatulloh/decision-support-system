@@ -1,36 +1,20 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
+import { Typography } from '@mui/material';
 import LayoutAdmin from '/components/Layout/Admin';
 import { DataGrid } from '@mui/x-data-grid';
-import { deleteCriteria, getCriterias } from '../../../lib/fetcher/criteria';
+import { Button } from '@material-ui/core';
+import useSWR from 'swr';
+import { deleteLecturer, getLecturers } from '../../lib/fetcher/lecturer';
+import AddLecturer from '../../sections/lecturer/AddLecturer';
+import EditLecturer from '../../sections/lecturer/EditLecturer';
 import { useRouter } from 'next/router';
-import AddCriteria from '../../../sections/criteria/AddCriteria';
-import EditCriteria from '../../../sections/criteria/EditCriteria';
-import useSWR, { useSWRConfig } from 'swr';
+import { useSWRConfig } from 'swr';
 
 const columns = [
+  { field: 'nip', headerName: 'NIP', width: 200 },
   {
-    field: 'code_criteria',
-    headerName: 'Code Kriteria',
-    width: 100,
-    editable: true,
-  },
-  {
-    field: 'name_criteria',
-    headerName: 'Nama Kriteria',
-    width: 250,
-    editable: true,
-  },
-  {
-    field: 'attribute',
-    headerName: 'Attribute',
-    width: 100,
-    editable: true,
-  },
-  {
-    field: 'weight',
-    headerName: 'Bobot',
-    width: 100,
+    field: 'name_lecturer',
+    headerName: 'Nama Dosen',
+    width: 200,
     editable: true,
   },
   {
@@ -42,9 +26,7 @@ const columns = [
         <Button
           variant="contained"
           color="primary"
-          onClick={() =>
-            router.push(`/admin/datakriteria?edit=${cellValues.id}`)
-          }
+          onClick={() => router.push(`/admin/datadosen?edit=${cellValues.id}`)}
         >
           Edit
         </Button>
@@ -63,10 +45,10 @@ const columns = [
           variant="contained"
           color="primary"
           onClick={() => {
-            router.push(`/admin/datakriteria/${cellValues.id}/detail`);
+            router.push(`/admin/datadosen/${cellValues.id}/detail`);
           }}
         >
-          Detail
+          detail
         </Button>
       );
     },
@@ -77,15 +59,13 @@ const columns = [
     field: 'delete',
     headerName: 'Delete',
     renderCell: (cellValues) => {
-      const { mutate } = useSWRConfig();
       return (
         <Button
           variant="contained"
           color="primary"
           onClick={() => {
             try {
-              deleteCriteria(cellValues.id);
-              mutate('/api/criteria', getCriterias);
+              deleteLecturer(cellValues.id);
               window.location.reload();
             } catch (error) {
               console.log(error);
@@ -101,29 +81,26 @@ const columns = [
   },
 ];
 
-const DataKriteria = () => {
+const DataDosen = () => {
   const router = useRouter();
   const { edit, add } = router.query;
-  const { data } = useSWR('/api/criteria', getCriterias);
-  const { mutate } = useSWRConfig();
-  mutate('/api/criteria', getCriterias);
-
+  const { data } = useSWR('/api/lecturer', getLecturers);
   return (
     <>
-      <LayoutAdmin pageTitle="Data Kriteria">
+      <LayoutAdmin pageTitle="Data Dosen">
         <>
           {add ? (
-            <AddCriteria />
+            <AddLecturer />
           ) : edit ? (
-            <EditCriteria />
+            <EditLecturer />
           ) : (
             <>
               <Button
                 variant="contained"
                 sx={{ mb: 2 }}
-                onClick={() => router.push('/admin/datakriteria?add=true')}
+                onClick={() => router.push('/admin/datadosen?add=true')}
               >
-                Tambah Kriteria
+                Tambah Dosen
               </Button>
               <div style={{ height: 640, width: '100%' }}>
                 <DataGrid
@@ -131,8 +108,9 @@ const DataKriteria = () => {
                   columns={columns}
                   pageSize={10}
                   rowsPerPageOptions={[]}
+                  //checkboxSelection
                   disableSelectionOnClick
-                  getRowId={(row) => row.id_criteria}
+                  getRowId={(row) => row.id_lecturer}
                 />
               </div>
             </>
@@ -143,4 +121,4 @@ const DataKriteria = () => {
   );
 };
 
-export default DataKriteria;
+export default DataDosen;
