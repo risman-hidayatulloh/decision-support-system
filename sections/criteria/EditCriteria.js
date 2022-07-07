@@ -47,7 +47,10 @@ const EditCriteria = () => {
 
   useEffect(() => {
     if (data) {
-      setValues(data);
+      console.log(data);
+      const { detail_criteria, ...tempValues } = data;
+      console.log(tempValues);
+      setValues(tempValues);
     }
   }, [data]);
 

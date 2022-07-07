@@ -30,7 +30,7 @@ const AddDetailCriteria = () => {
         console.log(error);
         console.log(error.response.data);
       }
-      console.log(id_kriteria, values);
+      //console.log(id_kriteria, values);
     },
   });
 

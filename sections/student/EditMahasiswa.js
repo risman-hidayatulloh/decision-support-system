@@ -49,7 +49,10 @@ const EditMahasiswa = () => {
 
   useEffect(() => {
     if (data) {
-      setValues(data);
+      console.log(data);
+      const { supervisor, id_user, ...tempValues } = data;
+      console.log(tempValues);
+      setValues(tempValues);
     }
   }, [data]);
 

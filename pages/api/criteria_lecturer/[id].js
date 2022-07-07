@@ -6,32 +6,33 @@ const prisma = new PrismaClient();
 const handler = nc()
   .get(async (req, res) => {
     const { id } = req.query;
-    const lecturer = await prisma.lecturer.findUnique({
+    const criteria_lecturer = await prisma.criteria_lecturer.findUnique({
       where: {
-        id_lecturer: Number(id),
+        id_criteria_lecturer: Number(id),
       },
     });
-    res.json(lecturer);
+    res.json(criteria_lecturer);
   })
   .patch(async (req, res) => {
     const { id } = req.query;
     const { body } = req;
-    const lecturer = await prisma.lecturer.update({
+    const criteria_lecturer = await prisma.criteria_lecturer.update({
       where: {
-        id_lecturer: Number(id),
+        id_criteria_lecturer: Number(id),
       },
       data: body,
     });
-    res.json(lecturer);
+    res.json(criteria_lecturer);
   })
+
   .delete(async (req, res) => {
     const { id } = req.query;
-    const lecturer = await prisma.lecturer.delete({
+    const criteria_lecturer = await prisma.criteria_lecturer.delete({
       where: {
-        id_lecturer: Number(id),
+        id_criteria_lecturer: Number(id),
       },
     });
-    res.json(lecturer);
+    res.json(criteria_lecturer);
   });
 
 export default handler;

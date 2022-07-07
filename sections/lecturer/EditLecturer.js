@@ -44,7 +44,10 @@ const EditLecturer = () => {
 
   useEffect(() => {
     if (data) {
-      setValues(data);
+      console.log(data);
+      const { criteria_lecturer, id_user, ...tempValues } = data;
+      console.log(tempValues);
+      setValues(tempValues);
     }
   }, [data]);
 

@@ -8,33 +8,33 @@ datasource db {
 }
 
 model criteria {
-  id_criteria       Int                 @id(map: "pk_36") @default(autoincrement())
-  code_criteria     String              @db.VarChar(255)
-  name_criteria     String              @db.VarChar(255)
-  attribute         String              @db.VarChar(255)
-  weight            Float
-  criteria_lecturer criteria_lecturer[]
-  detail_criteria   detail_criteria[]
+  id_criteria     Int               @id(map: "pk_36") @default(autoincrement())
+  code_criteria   String            @db.VarChar(255)
+  name_criteria   String            @db.VarChar(255)
+  attribute       String            @db.VarChar(255)
+  weight          Float
+  detail_criteria detail_criteria[]
 }
 
 model criteria_lecturer {
-  id_criteria_lecturer Int      @id(map: "pk_80") @default(autoincrement())
-  id_criteria          Int
+  id_criteria_lecturer Int             @id(map: "pk_80") @default(autoincrement())
+  id_detail_criteria   Int
   id_lecturer          Int
-  criteria             criteria @relation(fields: [id_criteria], references: [id_criteria], onDelete: NoAction, onUpdate: NoAction, map: "fk_88")
-  lecturer             lecturer @relation(fields: [id_lecturer], references: [id_lecturer], onDelete: NoAction, onUpdate: NoAction, map: "fk_101")
+  detail_criteria      detail_criteria @relation(fields: [id_detail_criteria], references: [id_detail_criteria], onDelete: NoAction, onUpdate: NoAction, map: "fk_88")
+  lecturer             lecturer        @relation(fields: [id_lecturer], references: [id_lecturer], onDelete: NoAction, onUpdate: NoAction, map: "fk_101")
 
   @@index([id_lecturer], map: "fk_103")
-  @@index([id_criteria], map: "fk_90")
+  @@index([id_detail_criteria], map: "fk_90")
 }
 
 model detail_criteria {
-  id_detail_criteria Int      @id(map: "pk_43") @default(autoincrement())
-  description        String   @db.VarChar(255)
+  id_detail_criteria Int                 @id(map: "pk_43") @default(autoincrement())
+  description        String              @db.VarChar(255)
   id_criteria        Int
   fuzzy              Float
-  variable           String   @db.VarChar(255)
-  criteria           criteria @relation(fields: [id_criteria], references: [id_criteria], onDelete: Cascade, onUpdate: Cascade, map: "fk_69")
+  variable           String              @db.VarChar(255)
+  criteria           criteria            @relation(fields: [id_criteria], references: [id_criteria], onDelete: Cascade, onUpdate: Cascade, map: "fk_69")
+  criteria_lecturer  criteria_lecturer[]
 
   @@index([id_criteria], map: "fk_71")
 }

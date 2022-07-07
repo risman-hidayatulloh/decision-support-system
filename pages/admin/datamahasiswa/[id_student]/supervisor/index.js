@@ -11,20 +11,19 @@ const columns = [
   {
     field: 'supervisor1',
     headerName: 'Pembimbing 1',
-    width: 150,
-    editable: true,
+    width: 230,
   },
   {
     field: 'supervisor2',
     headerName: 'Pembimbing 2',
-    width: 150,
-    editable: true,
+    width: 230,
   },
 ];
 
 const Supervisor = () => {
   const router = useRouter();
   const { id_student } = router.query;
+  const [pageSize, setPageSize] = React.useState(1);
 
   const { data } = useSWR(
     id_student ? `/api/student/${id_student}/supervisor` : null,
@@ -37,12 +36,14 @@ const Supervisor = () => {
     <>
       <LayoutAdmin pageTitle="Data Mahasiswa > Supervisor">
         <>
-          <Box sx={{ height: 640, width: '100%' }}>
+          <Box sx={{ height: 170, width: '100%' }}>
             <DataGrid
               rows={data ? data : []}
               columns={columns}
-              pageSize={5}
-              rowsPerPageOptions={[]}
+              pageSize={pageSize}
+              onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+              rowsPerPageOptions={[1]}
+              pagination
               //checkboxSelection
               disableSelectionOnClick
               getRowId={(row) => row.id_supervisor}

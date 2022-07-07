@@ -14,7 +14,6 @@ const columns = [
     field: 'name_student',
     headerName: 'Nama Mahasiswa',
     width: 200,
-    editable: true,
   },
   {
     field: 'thesis_title',
@@ -25,8 +24,7 @@ const columns = [
   {
     field: 'expertise',
     headerName: 'Bidang Keahlian',
-    width: 200,
-    editable: true,
+    width: 220,
   },
   {
     field: 'document',
@@ -52,7 +50,6 @@ const columns = [
       );
     },
     width: 80,
-    editable: true,
   },
   {
     field: 'supervisor',
@@ -72,7 +69,6 @@ const columns = [
       );
     },
     width: 120,
-    editable: true,
   },
   {
     field: 'delete',
@@ -98,17 +94,17 @@ const columns = [
       );
     },
     width: 80,
-    editable: true,
   },
 ];
 
 const DataMahasiswa = () => {
   const router = useRouter();
   const { add, edit } = router.query;
+  const [pageSize, setPageSize] = React.useState(10);
+
   const { data } = useSWR('/api/student', getStudents);
   const { mutate } = useSWRConfig();
   mutate('/api/student', getStudents);
-
   return (
     <>
       <LayoutAdmin pageTitle="Data Mahasiswa">
@@ -130,8 +126,10 @@ const DataMahasiswa = () => {
                 <DataGrid
                   rows={data ? data : []}
                   columns={columns}
-                  pageSize={10}
-                  rowsPerPageOptions={[]}
+                  pageSize={pageSize}
+                  onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+                  rowsPerPageOptions={[5, 10, 20]}
+                  pagination
                   //checkboxSelection
                   disableSelectionOnClick
                   getRowId={(row) => row.id_student}

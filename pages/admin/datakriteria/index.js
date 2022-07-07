@@ -13,25 +13,21 @@ const columns = [
     field: 'code_criteria',
     headerName: 'Code Kriteria',
     width: 100,
-    editable: true,
   },
   {
     field: 'name_criteria',
     headerName: 'Nama Kriteria',
     width: 250,
-    editable: true,
   },
   {
     field: 'attribute',
     headerName: 'Attribute',
     width: 100,
-    editable: true,
   },
   {
     field: 'weight',
     headerName: 'Bobot',
     width: 100,
-    editable: true,
   },
   {
     field: 'edit',
@@ -51,7 +47,6 @@ const columns = [
       );
     },
     width: 80,
-    editable: true,
   },
   {
     field: 'detail',
@@ -71,7 +66,6 @@ const columns = [
       );
     },
     width: 80,
-    editable: true,
   },
   {
     field: 'delete',
@@ -97,13 +91,14 @@ const columns = [
       );
     },
     width: 80,
-    editable: true,
   },
 ];
 
 const DataKriteria = () => {
   const router = useRouter();
   const { edit, add } = router.query;
+  const [pageSize, setPageSize] = React.useState(10);
+
   const { data } = useSWR('/api/criteria', getCriterias);
   const { mutate } = useSWRConfig();
   mutate('/api/criteria', getCriterias);
@@ -129,8 +124,10 @@ const DataKriteria = () => {
                 <DataGrid
                   rows={data ? data : []}
                   columns={columns}
-                  pageSize={10}
-                  rowsPerPageOptions={[]}
+                  pageSize={pageSize}
+                  onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+                  rowsPerPageOptions={[5, 10, 20]}
+                  pagination
                   disableSelectionOnClick
                   getRowId={(row) => row.id_criteria}
                 />

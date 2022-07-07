@@ -10,28 +10,24 @@ import {
 } from '../../../../../lib/fetcher/detail_criteria';
 import EditDetail from '../../../../../sections/criteriadetail/EditDetailCriteria';
 import AddDetail from '../../../../../sections/criteriadetail/AddDetailCriteria';
-import useSWR, { mutate } from 'swr';
-import { useSWRConfig } from 'swr';
+import useSWR, { useSWRConfig } from 'swr';
 
 const columns = [
   //{ field: 'id', headerName: 'ID', width: 90 },
   {
     field: 'description',
     headerName: 'Keterangan',
-    width: 150,
-    editable: true,
+    width: 210,
   },
   {
     field: 'fuzzy',
     headerName: 'Fuzzy',
-    width: 150,
-    editable: true,
+    width: 100,
   },
   {
     field: 'variable',
     headerName: 'Variabel',
-    width: 150,
-    editable: true,
+    width: 200,
   },
   {
     field: 'edit',
@@ -54,7 +50,6 @@ const columns = [
       );
     },
     width: 80,
-    editable: true,
   },
   {
     field: 'delete',
@@ -81,13 +76,13 @@ const columns = [
       );
     },
     width: 80,
-    editable: true,
   },
 ];
 
-const DetailKriteria = () => {
+const Detail = () => {
   const router = useRouter();
   const { id_criteria, add, edit } = router.query;
+  const [pageSize, setPageSize] = React.useState(10);
 
   const { data } = useSWR(
     id_criteria ? `/api/criteria/${id_criteria}/detail` : null,
@@ -98,6 +93,8 @@ const DetailKriteria = () => {
     `/api/criteria/${id_criteria}/detail`,
     getDetailByIdCriteria(id_criteria)
   );
+
+  console.log(data);
 
   return (
     <>
@@ -124,8 +121,10 @@ const DetailKriteria = () => {
                 <DataGrid
                   rows={data ? data : []}
                   columns={columns}
-                  pageSize={10}
-                  rowsPerPageOptions={[]}
+                  pageSize={pageSize}
+                  onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+                  rowsPerPageOptions={[5, 10, 20]}
+                  pagination
                   //checkboxSelection
                   disableSelectionOnClick
                   getRowId={(row) => row.id_detail_criteria}
@@ -139,4 +138,4 @@ const DetailKriteria = () => {
   );
 };
 
-export default DetailKriteria;
+export default Detail;

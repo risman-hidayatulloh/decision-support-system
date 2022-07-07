@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { TextField, Box, Button, Container } from '@mui/material';
 import { addCriteria } from '../../lib/fetcher/criteria';
 import { useRouter } from 'next/router';
@@ -5,11 +6,19 @@ import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { useEffect } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 const AddCriteria = () => {
   const router = useRouter();
   const { add } = router.query;
   const { mutate } = useSWRConfig();
+
+  const [age, setAge] = React.useState('');
+  const handleChange = (event) => {
+    setAge(event.target.value);
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -103,6 +112,43 @@ const AddCriteria = () => {
               : ' '
           }
         />
+        {/* <Select
+          labelId="demo-simple-select-label"
+          id="attribute"
+          label="Attribute"
+        >
+          <MenuItem
+            value={formik.values.attribute}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.attribute && Boolean(formik.errors.attribute)}
+            helperText={
+              formik.touched.attribute
+                ? formik.errors.attribute
+                  ? formik.errors.attribute
+                  : ' '
+                : ' '
+            }
+          >
+            Benefit
+          </MenuItem>
+          <MenuItem
+            value={formik.values.attribute}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.attribute && Boolean(formik.errors.attribute)}
+            helperText={
+              formik.touched.attribute
+                ? formik.errors.attribute
+                  ? formik.errors.attribute
+                  : ' '
+                : ' '
+            }
+          >
+            Cost
+          </MenuItem>
+        </Select> */}
+
         <TextField
           id="weight"
           label="Bobot"

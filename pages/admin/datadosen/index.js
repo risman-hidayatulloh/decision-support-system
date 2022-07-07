@@ -1,7 +1,7 @@
-import { Typography } from '@mui/material';
+import * as React from 'react';
 import LayoutAdmin from '/components/Layout/Admin';
 import { DataGrid } from '@mui/x-data-grid';
-import { Button } from '@material-ui/core';
+import Button from '@mui/material/Button';
 import { deleteLecturer, getLecturers } from '../../../lib/fetcher/lecturer';
 import AddLecturer from '../../../sections/lecturer/AddLecturer';
 import EditLecturer from '../../../sections/lecturer/EditLecturer';
@@ -13,8 +13,7 @@ const columns = [
   {
     field: 'name_lecturer',
     headerName: 'Nama Dosen',
-    width: 200,
-    editable: true,
+    width: 230,
   },
   {
     field: 'edit',
@@ -32,7 +31,6 @@ const columns = [
       );
     },
     width: 80,
-    editable: true,
   },
   {
     field: 'criteria',
@@ -52,7 +50,6 @@ const columns = [
       );
     },
     width: 100,
-    editable: true,
   },
   {
     field: 'delete',
@@ -78,13 +75,14 @@ const columns = [
       );
     },
     width: 80,
-    editable: true,
   },
 ];
 
 const DataDosen = () => {
   const router = useRouter();
   const { edit, add } = router.query;
+  const [pageSize, setPageSize] = React.useState(10);
+
   const { data } = useSWR('/api/lecturer', getLecturers);
   return (
     <>
@@ -107,8 +105,10 @@ const DataDosen = () => {
                 <DataGrid
                   rows={data ? data : []}
                   columns={columns}
-                  pageSize={10}
-                  rowsPerPageOptions={[]}
+                  pageSize={pageSize}
+                  onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+                  rowsPerPageOptions={[5, 10, 20]}
+                  pagination
                   //checkboxSelection
                   disableSelectionOnClick
                   getRowId={(row) => row.id_lecturer}
