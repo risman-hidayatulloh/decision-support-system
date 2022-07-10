@@ -10,6 +10,8 @@ import Autocomplete from '@mui/material/Autocomplete';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import Typography from '@mui/material/Typography';
+import { getCriterias } from '../../lib/fetcher/criteria';
+import { processData } from '../../lib/fetcher/process';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -25,9 +27,10 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 //   },
 // };
 
-const Perangkingan = () => {
+const Perangkingan = ({ setFinalData, setStudent }) => {
   const { data: student } = useSWR('/api/student', getStudents);
   const { data: lecturer } = useSWR('/api/lecturer', getLecturers);
+  const { data: criteria } = useSWR('/api/criteria', getCriterias);
 
   const [value, setValue] = React.useState(null);
   const [inputValue, setInputValue] = React.useState('');
@@ -35,14 +38,16 @@ const Perangkingan = () => {
   const [selectedLecturers, setSelectedLecturer] = React.useState([]);
   const [inputLecturer, setInputLecturer] = React.useState('');
 
-  const handleChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setPersonName(
-      // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value
-    );
+  const [selectedCriteria, setSelectedCriteria] = React.useState([]);
+  const [inputCriteria, setInputCriteria] = React.useState('');
+
+  const handleProcess = async () => {
+    try {
+      const response = await processData(selectedLecturers, selectedCriteria);
+      setFinalData(response);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -60,6 +65,7 @@ const Perangkingan = () => {
             value={value}
             onChange={(event, newValue) => {
               setValue(newValue);
+              setStudent(newValue);
             }}
             inputValue={inputValue}
             onInputChange={(event, newInputValue) => {
@@ -88,9 +94,6 @@ const Perangkingan = () => {
               );
             }}
           />
-          {/* <br />
-            <div>{`value: ${value !== null ? `'${value}'` : 'null'}`}</div>
-            <div>{`inputValue: '${inputValue}'`}</div> */}
         </Box>
         <Box
           sx={{
@@ -129,18 +132,56 @@ const Perangkingan = () => {
               setInputLecturer(newInputValue);
             }}
           />
-          {/* {inputLecturer}
-            {JSON.stringify(selectedLecturers)} */}
         </Box>
         <Box
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            ml: 3,
+            m: 3,
+          }}
+        >
+          <Autocomplete
+            multiple
+            id="criteria-auto-complete"
+            options={criteria ? criteria : []}
+            disableCloseOnSelect
+            getOptionLabel={(option) => option.name_criteria}
+            renderOption={(props, option, { selected }) => (
+              <li {...props}>
+                <Checkbox
+                  icon={icon}
+                  checkedIcon={checkedIcon}
+                  style={{ marginRight: 8 }}
+                  checked={selected}
+                />
+                {option.name_criteria}
+              </li>
+            )}
+            style={{ width: '100%' }}
+            renderInput={(params) => (
+              <TextField {...params} label="Kriteria" placeholder="Kriteria" />
+            )}
+            value={selectedCriteria}
+            onChange={(event, newValue) => {
+              setSelectedCriteria(newValue);
+            }}
+            inputValue={inputCriteria}
+            onInputChange={(event, newInputValue) => {
+              setInputCriteria(newInputValue);
+            }}
+          />
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            m: 3,
             width: '10%',
           }}
         >
-          <Button variant="contained">Proses</Button>
+          <Button onClick={handleProcess} variant="contained">
+            Proses
+          </Button>
         </Box>
       </Typography>
     </>

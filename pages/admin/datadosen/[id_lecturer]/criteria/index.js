@@ -122,10 +122,75 @@ import useSWR, { useSWRConfig } from 'swr';
 // ];
 
 const columns = [
-  { field: 'id_detail_criteria', headerName: 'id_detail_criteria', width: 210 },
-  { field: 'id_lecturer', headerName: 'id_lecturer', width: 100 },
-  { field: 'detail_criteria', headerName: 'detail_criteria', width: 200 },
-  { field: 'lecturer', headerName: 'lecturer', width: 200 },
+  // { field: 'id_lecturer', headerName: 'ID Lecturer', width: 100 },
+  {
+    field: 'name_criteria',
+    headerName: 'Kriteria',
+    valueGetter: (params) => {
+      const { row } = params;
+      return row.detail_criteria.criteria.name_criteria;
+    },
+    width: 210,
+  },
+  {
+    field: 'description',
+    headerName: 'Sub Kriteria',
+    valueGetter: (params) => {
+      const { row } = params;
+      return row.detail_criteria.description;
+    },
+    width: 200,
+  },
+  {
+    field: 'edit',
+    headerName: 'Edit',
+    renderCell: (cellValues) => {
+      const router = useRouter();
+
+      return (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() =>
+            router.push`/admin/datadosen/${cellValues.row.id_lecturer}/detail?edit=${cellValues.id}`()
+          }
+        >
+          Edit
+        </Button>
+      );
+    },
+    width: 80,
+  },
+  {
+    field: 'delete',
+    headerName: 'Delete',
+    renderCell: (cellValues) => {
+      const { mutate } = useSWRConfig();
+
+      return (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => {
+            try {
+              deleteCriteria_Lecturer(cellValues.id);
+              mutate(
+                `/api/lecturer/${cellValues.row.id_lecturer}/criteria`,
+                getCriteriaByIdLecturer(cellValues.id)
+              );
+
+              console.log('id', cellValues.id);
+            } catch (error) {
+              console.log(error);
+            }
+          }}
+        >
+          delete
+        </Button>
+      );
+    },
+    width: 80,
+  },
 ];
 
 const Criteria = () => {
@@ -148,7 +213,7 @@ const Criteria = () => {
     <>
       <LayoutAdmin pageTitle="Data Dosen > Criteria">
         <>
-          <Box sx={{ height: 400, width: '100%' }}>
+          <Box sx={{ height: 640, width: '100%' }}>
             <DataGrid
               rows={data ? data : []}
               columns={columns}

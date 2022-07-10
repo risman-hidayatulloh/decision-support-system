@@ -1,166 +1,173 @@
 import * as React from 'react';
 import LayoutAdmin from '/components/Layout/Admin';
 import Perangkingan from '/components/Admin/perangkingan';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
+import Kriteria from '/components/Admin/kriteria';
+import create from 'zustand';
 import Button from '@mui/material/Button';
-import { getDetailByIdCriteria } from '../../lib/fetcher/detail_criteria';
-import { getLecturers } from '../../lib/fetcher/lecturer';
-import useSWR from 'swr';
-import Autocomplete from '@mui/material/Autocomplete';
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@mui/icons-material/CheckBox';
-import Typography from '@mui/material/Typography';
-import { getCriterias } from '../../lib/fetcher/criteria';
-import { addCriteria_Lecturer } from '../../lib/fetcher/criteria_lecturer';
+import { DataGrid } from '@mui/x-data-grid';
+import { processData } from '../../lib/fetcher/process';
+import { useRouter } from 'next/router';
+import useSWR, { useSWRConfig } from 'swr';
 
-const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
-const checkedIcon = <CheckBoxIcon fontSize="small" />;
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Typography from '@mui/material/Typography';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Box } from '@mui/material';
+import { addResult } from '../../lib/fetcher/result';
+
+const useSupervisorStore = create((set) => ({
+  first: null,
+  second: null,
+  setFirstSupervisor: (first) => set(() => ({ first })),
+  setSecondSupervisor: (second) => set(() => ({ second })),
+}));
+
+const columns = [
+  {
+    field: 'rank',
+    headerName: 'Ranking',
+    width: 250,
+  },
+  {
+    field: 'lecturer',
+    headerName: 'Nama Dosen',
+    valueGetter: (params) => {
+      const { row } = params;
+      return row.lecturer.name_lecturer;
+    },
+    width: 250,
+  },
+  {
+    field: 'total_saw',
+    headerName: 'Skor',
+    width: 250,
+  },
+  {
+    field: 'action',
+    headerName: 'Aksi',
+    renderCell: (params) => {
+      const { setFirstSupervisor, setSecondSupervisor } = useSupervisorStore(
+        (state) => ({
+          ...state,
+        })
+      );
+
+      return (
+        <Box sx={{ display: 'flex', gap: 2 }}>
+          <Button
+            onClick={() => {
+              setFirstSupervisor({
+                id_lecturer: params.row.lecturer.id_lecturer,
+                name_lecturer: params.row.lecturer.name_lecturer,
+                score: params.row.total_saw,
+                rank: params.row.rank,
+              });
+            }}
+            variant="contained"
+            color="primary"
+            size="small"
+          >
+            Jadikan Sebagai Pembimbing 1
+          </Button>
+          <Button
+            onClick={() => {
+              setSecondSupervisor({
+                id_lecturer: params.row.lecturer.id_lecturer,
+                name_lecturer: params.row.lecturer.name_lecturer,
+                score: params.row.total_saw,
+                rank: params.row.rank,
+              });
+            }}
+            variant="contained"
+            color="primary"
+            size="small"
+          >
+            Jadikan Sebagai Pembimbing 2
+          </Button>
+        </Box>
+      );
+    },
+    width: 500,
+  },
+];
 
 const ProsesData = () => {
-  const [value, setValue] = React.useState(null);
-  const [inputValue, setInputValue] = React.useState('');
+  const router = useRouter();
 
-  const [selectedCriteria, setSelectedCriteria] = React.useState(null);
-  const [inputCriteria, setInputCriteria] = React.useState('');
+  const [student, setStudent] = React.useState(null);
+  const [pageSize, setPageSize] = React.useState(10);
+  const [finalData, setFinalData] = React.useState(null);
 
-  const [selectedDetailCriteria, setSelectedDetailCriteria] =
-    React.useState(null);
-  const [inputDetailCriteria, setInputDetailCriteria] = React.useState('');
+  const { first, second } = useSupervisorStore((state) => ({
+    ...state,
+  }));
 
-  const { data: lecturer } = useSWR('/api/lecturer', getLecturers);
-  const { data: criteria } = useSWR('/api/criteria', getCriterias);
-  const { data: detail_criteria } = useSWR(
-    selectedCriteria?.id_criteria
-      ? `/api/criteria/${selectedCriteria.id_criteria}/detail`
-      : null,
-    () => getDetailByIdCriteria(selectedCriteria.id_criteria)
-  );
-
-  const addCriteriaLecturer = () => {
-    addCriteria_Lecturer({
-      id_lecturer: value.id_lecturer,
-      id_detail_criteria: selectedDetailCriteria.id_detail_criteria,
-    });
+  const handleSubmit = async () => {
+    try {
+      await addResult([
+        {
+          ranking_results: first?.rank,
+          id_student: student.id_student,
+          score: first?.score,
+          id_supervisor: first?.id_lecturer,
+        },
+        {
+          ranking_results: second?.rank,
+          id_student: student.id_student,
+          score: second?.score,
+          id_supervisor: second?.id_lecturer,
+        },
+      ]);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <>
       <LayoutAdmin pageTitle="Proses Data">
         <>
-          <Typography variant="h6" gutterBottom component="div">
-            Proses Kriteria
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                m: 3,
-              }}
-            >
-              <Autocomplete
-                value={value}
-                onChange={(event, newValue) => {
-                  setValue(newValue);
-                }}
-                inputValue={inputValue}
-                onInputChange={(event, newInputValue) => {
-                  setInputValue(newInputValue);
-                }}
-                id="controllable-states-demo"
-                options={lecturer ? lecturer : []}
-                sx={{ width: '40%' }}
-                renderInput={(params) => (
-                  <TextField {...params} label="Dosen" />
-                )}
-                getOptionLabel={(option) => option.name_lecturer}
-                renderOption={(props, option) => {
-                  return (
-                    <li {...props} key={option.id_lecturer}>
-                      {option.name_lecturer}
-                    </li>
-                  );
-                }}
-              />
-            </Box>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                m: 3,
-              }}
-            >
-              <Autocomplete
-                value={selectedCriteria}
-                onChange={(event, newValue) => {
-                  setSelectedCriteria(newValue);
-                }}
-                inputValue={inputCriteria}
-                onInputChange={(event, newInputValue) => {
-                  setInputCriteria(newInputValue);
-                }}
-                id="criteria-select"
-                options={criteria ? criteria : []}
-                sx={{ width: '40%' }}
-                renderInput={(params) => (
-                  <TextField {...params} label="Kriteria" />
-                )}
-                getOptionLabel={(option) => option.name_criteria}
-                renderOption={(props, option) => {
-                  return (
-                    <li {...props} key={option.id_criteria}>
-                      {option.name_criteria}
-                    </li>
-                  );
-                }}
-              />
-            </Box>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                m: 3,
-              }}
-            >
-              <Autocomplete
-                value={selectedDetailCriteria}
-                onChange={(event, newValue) => {
-                  setSelectedDetailCriteria(newValue);
-                }}
-                inputValue={inputDetailCriteria}
-                onInputChange={(event, newInputValue) => {
-                  setInputDetailCriteria(newInputValue);
-                }}
-                id="criteria-detail-select"
-                options={detail_criteria ? detail_criteria : []}
-                sx={{ width: '40%' }}
-                renderInput={(params) => (
-                  <TextField {...params} label="Detail Kriteria" />
-                )}
-                getOptionLabel={(option) => option.description}
-                renderOption={(props, option) => {
-                  return (
-                    <li {...props} key={option.id_detail_criteria}>
-                      {option.description}
-                    </li>
-                  );
-                }}
-              />
-            </Box>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                m: 3,
-                width: '10%',
-              }}
-            >
-              <Button variant="contained" onClick={addCriteriaLecturer}>
-                Simpan
-              </Button>
-            </Box>
-          </Typography>
+          <Kriteria />
 
-          {/* <Perangkingan /> */}
+          <Perangkingan setFinalData={setFinalData} setStudent={setStudent} />
+
+          <Accordion>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <Typography>Hasil Perangkingan</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <div style={{ height: 300, width: '100%' }}>
+                <DataGrid
+                  rows={finalData ? finalData : []}
+                  columns={columns}
+                  pageSize={pageSize}
+                  onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+                  rowsPerPageOptions={[5, 10, 20]}
+                  pagination
+                  disableSelectionOnClick
+                  getRowId={(row) => row.lecturer.id_lecturer}
+                />
+              </div>
+
+              <Box
+                sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}
+              >
+                <Typography>Pembimbing 1 : {first?.name_lecturer} </Typography>
+                <Typography>Pembimbing 2 : {second?.name_lecturer} </Typography>
+                <Box>
+                  <Button onClick={handleSubmit} variant="contained">
+                    Submit
+                  </Button>
+                </Box>
+              </Box>
+            </AccordionDetails>
+          </Accordion>
         </>
       </LayoutAdmin>
     </>

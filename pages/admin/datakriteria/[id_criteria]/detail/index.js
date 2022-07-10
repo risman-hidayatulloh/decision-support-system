@@ -55,6 +55,8 @@ const columns = [
     field: 'delete',
     headerName: 'Delete',
     renderCell: (cellValues) => {
+      const { mutate } = useSWRConfig();
+
       return (
         <Button
           variant="contained"
@@ -62,10 +64,14 @@ const columns = [
           onClick={() => {
             try {
               deleteDetail_Criteria(cellValues.id);
+              // console.log('test1');
+              // console.log(cellValues.id);
+              // console.log(cellValues.row.id_criteria);
               mutate(
                 `/api/criteria/${cellValues.row.id_criteria}/detail`,
                 getDetailByIdCriteria(cellValues.id)
               );
+              console.log('test2');
             } catch (error) {
               console.log(error);
             }
@@ -93,8 +99,6 @@ const Detail = () => {
     `/api/criteria/${id_criteria}/detail`,
     getDetailByIdCriteria(id_criteria)
   );
-
-  console.log(data);
 
   return (
     <>

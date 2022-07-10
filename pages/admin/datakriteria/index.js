@@ -80,7 +80,7 @@ const columns = [
             try {
               deleteCriteria(cellValues.id);
               mutate('/api/criteria', getCriterias);
-              window.location.reload();
+              //window.location.reload();
             } catch (error) {
               console.log(error);
             }
@@ -100,8 +100,8 @@ const DataKriteria = () => {
   const [pageSize, setPageSize] = React.useState(10);
 
   const { data } = useSWR('/api/criteria', getCriterias);
-  const { mutate } = useSWRConfig();
-  mutate('/api/criteria', getCriterias);
+  //const { mutate } = useSWRConfig();
+  //mutate('/api/criteria', getCriterias);
 
   return (
     <>

@@ -9,21 +9,17 @@ import useSWR, { useSWRConfig } from 'swr';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
 
 const AddCriteria = () => {
   const router = useRouter();
   const { add } = router.query;
   const { mutate } = useSWRConfig();
 
-  const [age, setAge] = React.useState('');
-  const handleChange = (event) => {
-    setAge(event.target.value);
-  };
-
   const formik = useFormik({
     initialValues: {
       code_criteria: '',
-      attribute: '',
+      attribute: 'benefit',
       name_criteria: '',
       weight: 0,
     },
@@ -43,6 +39,11 @@ const AddCriteria = () => {
       }
     },
   });
+  const { setFieldValue } = formik;
+
+  const handleChange = (event) => {
+    setFieldValue('attribute', event.target.value);
+  };
 
   return (
     <Container maxWidth="md">
@@ -95,7 +96,7 @@ const AddCriteria = () => {
               : ' '
           }
         />
-        <TextField
+        {/* <TextField
           id="attribute"
           label="Attribute"
           variant="standard"
@@ -111,44 +112,20 @@ const AddCriteria = () => {
                 : ' '
               : ' '
           }
-        />
-        {/* <Select
-          labelId="demo-simple-select-label"
-          id="attribute"
-          label="Attribute"
-        >
-          <MenuItem
+        /> */}
+        <FormControl fullWidth>
+          <InputLabel id="attribute-select">Attribute</InputLabel>
+          <Select
+            labelId="attribute-select"
+            id="demo-simple-select"
             value={formik.values.attribute}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.attribute && Boolean(formik.errors.attribute)}
-            helperText={
-              formik.touched.attribute
-                ? formik.errors.attribute
-                  ? formik.errors.attribute
-                  : ' '
-                : ' '
-            }
+            label="Attribute"
+            onChange={handleChange}
           >
-            Benefit
-          </MenuItem>
-          <MenuItem
-            value={formik.values.attribute}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.attribute && Boolean(formik.errors.attribute)}
-            helperText={
-              formik.touched.attribute
-                ? formik.errors.attribute
-                  ? formik.errors.attribute
-                  : ' '
-                : ' '
-            }
-          >
-            Cost
-          </MenuItem>
-        </Select> */}
-
+            <MenuItem value={'benefit'}>Benefit</MenuItem>
+            <MenuItem value={'cost'}>Cost</MenuItem>
+          </Select>
+        </FormControl>
         <TextField
           id="weight"
           label="Bobot"

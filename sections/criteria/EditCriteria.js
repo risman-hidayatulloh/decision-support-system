@@ -3,6 +3,10 @@ import { editCriteria, getCriteria } from '../../lib/fetcher/criteria';
 import { useRouter } from 'next/router';
 import * as yup from 'yup';
 import useSWR from 'swr';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
 import { useFormik } from 'formik';
 import { useEffect } from 'react';
 import { useSWRConfig } from 'swr';
@@ -43,7 +47,7 @@ const EditCriteria = () => {
     getCriteria(edit)
   );
 
-  const { setValues } = formik;
+  const { setValues, setFieldValue } = formik;
 
   useEffect(() => {
     if (data) {
@@ -53,6 +57,10 @@ const EditCriteria = () => {
       setValues(tempValues);
     }
   }, [data]);
+
+  const handleChange = (event) => {
+    setFieldValue('attribute', event.target.value);
+  };
 
   return (
     <Container maxWidth="md">
@@ -87,23 +95,19 @@ const EditCriteria = () => {
           }
         />
 
-        <TextField
-          id="attribute"
-          label="Attribute"
-          variant="standard"
-          fullWidth
-          value={formik.values.attribute}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.attribute && Boolean(formik.errors.attribute)}
-          helperText={
-            formik.touched.attribute
-              ? formik.errors.attribute
-                ? formik.errors.attribute
-                : ' '
-              : ' '
-          }
-        />
+        <FormControl fullWidth>
+          <InputLabel id="attribute-select">Attribute</InputLabel>
+          <Select
+            labelId="attribute-select"
+            id="demo-simple-select"
+            value={formik.values.attribute}
+            label="Attribute"
+            onChange={handleChange}
+          >
+            <MenuItem value={'benefit'}>Benefit</MenuItem>
+            <MenuItem value={'cost'}>Cost</MenuItem>
+          </Select>
+        </FormControl>
 
         <TextField
           id="weight"
