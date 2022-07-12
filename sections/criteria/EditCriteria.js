@@ -2,21 +2,18 @@ import { TextField, Box, Button, Container } from '@mui/material';
 import { editCriteria, getCriteria } from '../../lib/fetcher/criteria';
 import { useRouter } from 'next/router';
 import * as yup from 'yup';
-import useSWR from 'swr';
+import { useFormik } from 'formik';
+import { useEffect } from 'react';
+import useSWR, { useSWRConfig } from 'swr';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import { useFormik } from 'formik';
-import { useEffect } from 'react';
-import { useSWRConfig } from 'swr';
 
 const EditCriteria = () => {
   const router = useRouter();
-
-  const { mutate } = useSWRConfig();
-
   const { edit } = router.query;
+  const { mutate } = useSWRConfig();
 
   const formik = useFormik({
     initialValues: {
@@ -51,9 +48,9 @@ const EditCriteria = () => {
 
   useEffect(() => {
     if (data) {
-      console.log(data);
+      //console.log(data);
       const { detail_criteria, ...tempValues } = data;
-      console.log(tempValues);
+      //console.log(tempValues);
       setValues(tempValues);
     }
   }, [data]);

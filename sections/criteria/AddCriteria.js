@@ -1,10 +1,8 @@
-import * as React from 'react';
 import { TextField, Box, Button, Container } from '@mui/material';
 import { addCriteria } from '../../lib/fetcher/criteria';
 import { useRouter } from 'next/router';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
-import { useEffect } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -13,7 +11,6 @@ import InputLabel from '@mui/material/InputLabel';
 
 const AddCriteria = () => {
   const router = useRouter();
-  const { add } = router.query;
   const { mutate } = useSWRConfig();
 
   const formik = useFormik({
@@ -24,6 +21,7 @@ const AddCriteria = () => {
       weight: 0,
     },
     validationSchema: yup.object({
+      code_criteria: yup.string().required('Code is required'),
       attribute: yup.string().required('Attribute is required'),
       name_criteria: yup.string().required('Name is required'),
       weight: yup.number().required('Weight is required'),

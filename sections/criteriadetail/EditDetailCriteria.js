@@ -12,10 +12,8 @@ import { useSWRConfig } from 'swr';
 
 const EditDetailCriteria = () => {
   const router = useRouter();
-
-  const { mutate } = useSWRConfig();
-
   const { edit } = router.query;
+  const { mutate } = useSWRConfig();
 
   const formik = useFormik({
     initialValues: {

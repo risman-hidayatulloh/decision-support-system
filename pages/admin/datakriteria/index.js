@@ -7,11 +7,12 @@ import { useRouter } from 'next/router';
 import AddCriteria from '../../../sections/criteria/AddCriteria';
 import EditCriteria from '../../../sections/criteria/EditCriteria';
 import useSWR, { useSWRConfig } from 'swr';
+import { Box } from '@mui/material';
 
 const columns = [
   {
     field: 'code_criteria',
-    headerName: 'Code Kriteria',
+    headerName: 'Kode Kriteria',
     width: 100,
   },
   {
@@ -29,68 +30,53 @@ const columns = [
     headerName: 'Bobot',
     width: 100,
   },
+
   {
-    field: 'edit',
-    headerName: 'Edit',
+    field: 'action',
+    headerName: 'Aksi',
     renderCell: (cellValues) => {
       const router = useRouter();
-      return (
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() =>
-            router.push(`/admin/datakriteria?edit=${cellValues.id}`)
-          }
-        >
-          Edit
-        </Button>
-      );
-    },
-    width: 80,
-  },
-  {
-    field: 'detail',
-    headerName: 'Detail',
-    renderCell: (cellValues) => {
-      const router = useRouter();
-      return (
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => {
-            router.push(`/admin/datakriteria/${cellValues.id}/detail`);
-          }}
-        >
-          Detail
-        </Button>
-      );
-    },
-    width: 80,
-  },
-  {
-    field: 'delete',
-    headerName: 'Delete',
-    renderCell: (cellValues) => {
       const { mutate } = useSWRConfig();
       return (
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => {
-            try {
-              deleteCriteria(cellValues.id);
-              mutate('/api/criteria', getCriterias);
-              //window.location.reload();
-            } catch (error) {
-              console.log(error);
+        <Box sx={{ display: 'flex', gap: 1 }}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() =>
+              router.push(`/admin/datakriteria?edit=${cellValues.id}`)
             }
-          }}
-        >
-          delete
-        </Button>
+          >
+            Edit
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              router.push(`/admin/datakriteria/${cellValues.id}/detail`);
+            }}
+          >
+            Detail
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              try {
+                deleteCriteria(cellValues.id);
+                mutate('/api/criteria', getCriterias);
+                router.push('/admin/datakriteria');
+                //window.location.reload();
+              } catch (error) {
+                console.log(error);
+              }
+            }}
+          >
+            Delete
+          </Button>
+        </Box>
       );
     },
-    width: 80,
+    width: 320,
   },
 ];
 
@@ -100,8 +86,6 @@ const DataKriteria = () => {
   const [pageSize, setPageSize] = React.useState(10);
 
   const { data } = useSWR('/api/criteria', getCriterias);
-  //const { mutate } = useSWRConfig();
-  //mutate('/api/criteria', getCriterias);
 
   return (
     <>
@@ -118,7 +102,7 @@ const DataKriteria = () => {
                 sx={{ mb: 2 }}
                 onClick={() => router.push('/admin/datakriteria?add=true')}
               >
-                Tambah Kriteria
+                Add Criteria
               </Button>
               <div style={{ height: 640, width: '100%' }}>
                 <DataGrid

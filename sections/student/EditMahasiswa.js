@@ -2,17 +2,18 @@ import { TextField, Box, Button, Container } from '@mui/material';
 import { editStudent, getStudent } from '../../lib/fetcher/student';
 import { useRouter } from 'next/router';
 import * as yup from 'yup';
-import useSWR from 'swr';
 import { useFormik } from 'formik';
 import { useEffect } from 'react';
-import { useSWRConfig } from 'swr';
+import useSWR, { useSWRConfig } from 'swr';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
 
 const EditMahasiswa = () => {
   const router = useRouter();
-
-  const { mutate } = useSWRConfig();
-
   const { edit } = router.query;
+  const { mutate } = useSWRConfig();
 
   const formik = useFormik({
     initialValues: {
@@ -28,7 +29,6 @@ const EditMahasiswa = () => {
       name_student: yup.string().required('Name is required'),
       thesis_title: yup.string().required('Thesis title is required'),
       expertise: yup.string().required('Expertise is required'),
-      document: yup.string().required('Document is required'),
     }),
     onSubmit: async (values) => {
       try {
@@ -38,6 +38,7 @@ const EditMahasiswa = () => {
       } catch (error) {
         console.log(error);
       }
+      console.log(values);
     },
   });
 
@@ -45,16 +46,22 @@ const EditMahasiswa = () => {
     getStudent(edit)
   );
 
-  const { setValues } = formik;
+  console.log(data);
+
+  const { setValues, setFieldValue } = formik;
 
   useEffect(() => {
     if (data) {
-      console.log(data);
-      const { supervisor, id_user, ...tempValues } = data;
+      //console.log(data);
+      const { id_user, ...tempValues } = data;
       console.log(tempValues);
-      setValues(tempValues);
+      //setValues(tempValues);
     }
   }, [data]);
+
+  const handleChange = (event) => {
+    setFieldValue('expertise', event.target.value);
+  };
 
   return (
     <Container maxWidth="md">
@@ -127,7 +134,30 @@ const EditMahasiswa = () => {
           }
         />
 
-        <TextField
+        <FormControl fullWidth>
+          <InputLabel id="expertise-select">
+            Kelompok Bidang Keahlian
+          </InputLabel>
+          <Select
+            labelId="expertise-select"
+            id="demo-simple-select"
+            value={formik.values.expertise}
+            label="kelompok-bidang-keahlian"
+            onChange={handleChange}
+          >
+            <MenuItem value={'RPL dan Manajemen Informasi'}>
+              RPL dan Manajemen Informasi
+            </MenuItem>
+            <MenuItem value={'Kecerdasan Artifisial'}>
+              Kecerdasan Artifisial
+            </MenuItem>
+            <MenuItem value={'Multimedia dan Jaringan'}>
+              Multimedia dan Jaringan
+            </MenuItem>
+          </Select>
+        </FormControl>
+
+        {/* <TextField
           id="expertise"
           label="Bidang Keahlian"
           variant="standard"
@@ -143,7 +173,7 @@ const EditMahasiswa = () => {
                 : ' '
               : ' '
           }
-        />
+        /> */}
 
         <TextField
           id="document"

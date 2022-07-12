@@ -36,10 +36,11 @@ const columns = [
   {
     field: 'action',
     headerName: 'Aksi',
-    renderCell: (params) => {
+    renderCell: (cellValues) => {
       const router = useRouter();
+      const { mutate } = useSWRConfig();
       return (
-        <Box sx={{ display: 'flex', gap: 2 }}>
+        <Box sx={{ display: 'flex', gap: 1 }}>
           <Button
             variant="contained"
             color="primary"
@@ -52,9 +53,9 @@ const columns = [
           <Button
             variant="contained"
             color="primary"
-            onClick={() => {
-              router.push(`/admin/datamahasiswa/${cellValues.id}/supervisor`);
-            }}
+            // onClick={() => {
+            //   router.push(`/admin/datamahasiswa/${cellValues.id}/supervisor`);
+            // }}
           >
             Supervisor
           </Button>
@@ -150,8 +151,7 @@ const DataMahasiswa = () => {
   const [pageSize, setPageSize] = React.useState(10);
 
   const { data } = useSWR('/api/student', getStudents);
-  const { mutate } = useSWRConfig();
-  mutate('/api/student', getStudents);
+
   return (
     <>
       <LayoutAdmin pageTitle="Data Mahasiswa">

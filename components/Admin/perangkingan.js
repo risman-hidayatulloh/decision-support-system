@@ -12,20 +12,10 @@ import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import Typography from '@mui/material/Typography';
 import { getCriterias } from '../../lib/fetcher/criteria';
 import { processData } from '../../lib/fetcher/process';
+import { toast } from 'react-toastify';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
-
-// const ITEM_HEIGHT = 48;
-// const ITEM_PADDING_TOP = 8;
-// const MenuProps = {
-//   PaperProps: {
-//     style: {
-//       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-//       width: 250,
-//     },
-//   },
-// };
 
 const Perangkingan = ({ setFinalData, setStudent }) => {
   const { data: student } = useSWR('/api/student', getStudents);
@@ -34,26 +24,29 @@ const Perangkingan = ({ setFinalData, setStudent }) => {
 
   const [value, setValue] = React.useState(null);
   const [inputValue, setInputValue] = React.useState('');
+  console.log('value', value);
 
   const [selectedLecturers, setSelectedLecturer] = React.useState([]);
   const [inputLecturer, setInputLecturer] = React.useState('');
+  console.log('selectedLecturers', selectedLecturers);
 
   const [selectedCriteria, setSelectedCriteria] = React.useState([]);
   const [inputCriteria, setInputCriteria] = React.useState('');
+  console.log('selectedCriteria', selectedCriteria);
 
   const handleProcess = async () => {
     try {
       const response = await processData(selectedLecturers, selectedCriteria);
       setFinalData(response);
     } catch (error) {
-      console.log(error);
+      toast('Data tidak sesuai');
     }
   };
 
   return (
     <>
       <Typography variant="h6" gutterBottom component="div">
-        Proses Perangkingan
+        Perangkingan
         <Box
           sx={{
             display: 'flex',

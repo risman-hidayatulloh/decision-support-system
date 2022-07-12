@@ -5,7 +5,12 @@ const prisma = new PrismaClient();
 
 const handler = nc()
   .get(async (req, res) => {
-    const criteria = await prisma.criteria.findMany();
+    const criteria = await prisma.criteria.findMany({
+      orderBy: {
+        code_criteria: 'asc',
+      },
+    });
+
     res.json(criteria);
   })
   .post(async (req, res) => {

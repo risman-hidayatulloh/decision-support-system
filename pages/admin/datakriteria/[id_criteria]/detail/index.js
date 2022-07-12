@@ -30,58 +30,41 @@ const columns = [
     width: 200,
   },
   {
-    field: 'edit',
-    headerName: 'Edit',
+    field: 'action',
+    headerName: 'Aksi',
     renderCell: (cellValues) => {
       const router = useRouter();
-
-      return (
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() =>
-            router.push(
-              `/admin/datakriteria/${cellValues.row.id_criteria}/detail?edit=${cellValues.id}`
-            )
-          }
-        >
-          Edit
-        </Button>
-      );
-    },
-    width: 80,
-  },
-  {
-    field: 'delete',
-    headerName: 'Delete',
-    renderCell: (cellValues) => {
       const { mutate } = useSWRConfig();
-
       return (
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => {
-            try {
+        <Box sx={{ display: 'flex', gap: 1 }}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() =>
+              router.push(
+                `/admin/datakriteria/${cellValues.row.id_criteria}/detail?edit=${cellValues.id}`
+              )
+            }
+          >
+            Edit
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => {
               deleteDetail_Criteria(cellValues.id);
-              // console.log('test1');
-              // console.log(cellValues.id);
-              // console.log(cellValues.row.id_criteria);
               mutate(
                 `/api/criteria/${cellValues.row.id_criteria}/detail`,
                 getDetailByIdCriteria(cellValues.id)
               );
-              console.log('test2');
-            } catch (error) {
-              console.log(error);
-            }
-          }}
-        >
-          delete
-        </Button>
+            }}
+          >
+            Delete
+          </Button>
+        </Box>
       );
     },
-    width: 80,
+    width: 190,
   },
 ];
 
@@ -119,7 +102,7 @@ const Detail = () => {
                   )
                 }
               >
-                Tambah Detail Kriteria
+                Add Detail Criteria
               </Button>
               <Box sx={{ height: 640, width: '100%' }}>
                 <DataGrid

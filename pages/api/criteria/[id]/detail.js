@@ -12,6 +12,9 @@ const handler = nc()
           id_criteria: Number(id),
         },
       },
+      orderBy: {
+        fuzzy: 'desc',
+      },
     });
     res.json(detail_criteria);
   })

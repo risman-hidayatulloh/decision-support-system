@@ -4,6 +4,10 @@ import { useRouter } from 'next/router';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import useSWR, { useSWRConfig } from 'swr';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
 
 const AddLecturer = () => {
   const router = useRouter();
@@ -29,9 +33,14 @@ const AddLecturer = () => {
       } catch (error) {
         console.log(error);
       }
-      console.log(values);
+      //console.log(values);
     },
   });
+  const { setFieldValue } = formik;
+
+  const handleChange = (event) => {
+    setFieldValue('is_admin', event.target.value);
+  };
 
   return (
     <Container maxWidth="md">
@@ -82,7 +91,7 @@ const AddLecturer = () => {
               : ' '
           }
         />
-        <TextField
+        {/* <TextField
           id="is_admin"
           label="Admin"
           variant="standard"
@@ -98,7 +107,22 @@ const AddLecturer = () => {
                 : ' '
               : ' '
           }
-        />
+        /> */}
+
+        <FormControl fullWidth>
+          <InputLabel id="is_admin-select">Admin</InputLabel>
+          <Select
+            labelId="is_admin-select"
+            id="demo-simple-select"
+            value={formik.values.is_admin}
+            label="is_admin"
+            onChange={handleChange}
+          >
+            <MenuItem value={false}>False</MenuItem>
+            <MenuItem value={true}>True</MenuItem>
+          </Select>
+        </FormControl>
+
         <TextField
           id="email"
           label="Email"

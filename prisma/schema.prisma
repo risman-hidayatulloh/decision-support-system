@@ -21,7 +21,7 @@ model criteria_lecturer {
   id_detail_criteria   Int
   id_lecturer          Int
   detail_criteria      detail_criteria @relation(fields: [id_detail_criteria], references: [id_detail_criteria], onDelete: NoAction, onUpdate: NoAction, map: "fk_88")
-  lecturer             lecturer        @relation(fields: [id_lecturer], references: [id_lecturer], onDelete: NoAction, onUpdate: NoAction, map: "fk_101")
+  lecturer             lecturer        @relation(fields: [id_lecturer], references: [id_lecturer], onDelete: Cascade, onUpdate: Cascade, map: "fk_101")
 
   @@index([id_lecturer], map: "fk_103")
   @@index([id_detail_criteria], map: "fk_90")

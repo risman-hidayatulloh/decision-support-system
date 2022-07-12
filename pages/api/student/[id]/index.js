@@ -10,9 +10,6 @@ const handler = nc()
       where: {
         id_student: Number(id),
       },
-      include: {
-        supervisor: true,
-      },
     });
     res.json(student);
   })

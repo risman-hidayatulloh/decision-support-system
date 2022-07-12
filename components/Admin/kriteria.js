@@ -50,7 +50,7 @@ const Kriteria = () => {
   return (
     <>
       <Typography variant="h6" gutterBottom component="div">
-        Proses Kriteria
+        Kriteria
         <Box
           sx={{
             display: 'flex',

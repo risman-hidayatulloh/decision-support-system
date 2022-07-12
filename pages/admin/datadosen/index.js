@@ -7,74 +7,60 @@ import AddLecturer from '../../../sections/lecturer/AddLecturer';
 import EditLecturer from '../../../sections/lecturer/EditLecturer';
 import { useRouter } from 'next/router';
 import useSWR, { useSWRConfig } from 'swr';
+import { Box } from '@mui/material';
 
 const columns = [
-  { field: 'nip', headerName: 'NIP', width: 200 },
+  { field: 'nip', headerName: 'NIP/NIDN', width: 200 },
   {
     field: 'name_lecturer',
     headerName: 'Nama Dosen',
     width: 230,
   },
   {
-    field: 'edit',
-    headerName: 'Edit',
+    field: 'action',
+    headerName: 'Aksi',
     renderCell: (cellValues) => {
       const router = useRouter();
-      return (
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => router.push(`/admin/datadosen?edit=${cellValues.id}`)}
-        >
-          Edit
-        </Button>
-      );
-    },
-    width: 80,
-  },
-  {
-    field: 'criteria',
-    headerName: 'Kriteria',
-    renderCell: (cellValues) => {
-      const router = useRouter();
-      return (
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => {
-            router.push(`/admin/datadosen/${cellValues.id}/criteria`);
-          }}
-        >
-          Criteria
-        </Button>
-      );
-    },
-    width: 100,
-  },
-  {
-    field: 'delete',
-    headerName: 'Delete',
-    renderCell: (cellValues) => {
       const { mutate } = useSWRConfig();
       return (
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => {
-            try {
-              deleteLecturer(cellValues.id);
-              mutate('/api/lecturer', getLecturers);
-              window.location.reload();
-            } catch (error) {
-              console.log(error);
+        <Box sx={{ display: 'flex', gap: 1 }}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() =>
+              router.push(`/admin/datadosen?edit=${cellValues.id}`)
             }
-          }}
-        >
-          delete
-        </Button>
+          >
+            Edit
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              router.push(`/admin/datadosen/${cellValues.id}/criteria`);
+            }}
+          >
+            Criteria
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              try {
+                deleteLecturer(cellValues.id);
+                mutate('/api/lecturer', getLecturers);
+                router.push('/admin/datadosen');
+              } catch (error) {
+                console.log(error);
+              }
+            }}
+          >
+            Delete
+          </Button>
+        </Box>
       );
     },
-    width: 80,
+    width: 280,
   },
 ];
 
@@ -99,7 +85,7 @@ const DataDosen = () => {
                 sx={{ mb: 2 }}
                 onClick={() => router.push('/admin/datadosen?add=true')}
               >
-                Tambah Dosen
+                Add Lecturer
               </Button>
               <div style={{ height: 640, width: '100%' }}>
                 <DataGrid

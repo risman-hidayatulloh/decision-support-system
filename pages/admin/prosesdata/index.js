@@ -5,7 +5,6 @@ import Kriteria from '/components/Admin/kriteria';
 import create from 'zustand';
 import Button from '@mui/material/Button';
 import { DataGrid } from '@mui/x-data-grid';
-import { processData } from '../../lib/fetcher/process';
 import { useRouter } from 'next/router';
 import useSWR, { useSWRConfig } from 'swr';
 
@@ -15,7 +14,8 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Box } from '@mui/material';
-import { addResult } from '../../lib/fetcher/result';
+import { addResult } from '../../../lib/fetcher/result';
+import { toast } from 'react-toastify';
 
 const useSupervisorStore = create((set) => ({
   first: null,
@@ -121,7 +121,7 @@ const ProsesData = () => {
         },
       ]);
     } catch (error) {
-      console.log(error);
+      toast(error.message);
     }
   };
 

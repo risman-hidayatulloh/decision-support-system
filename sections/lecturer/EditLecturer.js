@@ -2,17 +2,18 @@ import { TextField, Box, Button, Container } from '@mui/material';
 import { editLecturer, getLecturer } from '../../lib/fetcher/lecturer';
 import { useRouter } from 'next/router';
 import * as yup from 'yup';
-import useSWR from 'swr';
 import { useFormik } from 'formik';
 import { useEffect } from 'react';
-import { useSWRConfig } from 'swr';
+import useSWR, { useSWRConfig } from 'swr';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
 
 const EditLecturer = () => {
   const router = useRouter();
-
-  const { mutate } = useSWRConfig();
-
   const { edit } = router.query;
+  const { mutate } = useSWRConfig();
 
   const formik = useFormik({
     initialValues: {
@@ -40,16 +41,20 @@ const EditLecturer = () => {
     getLecturer(edit)
   );
 
-  const { setValues } = formik;
+  const { setValues, setFieldValue } = formik;
 
   useEffect(() => {
     if (data) {
-      console.log(data);
+      //console.log(data);
       const { criteria_lecturer, id_user, ...tempValues } = data;
-      console.log(tempValues);
+      //console.log(tempValues);
       setValues(tempValues);
     }
   }, [data]);
+
+  const handleChange = (event) => {
+    setFieldValue('is_admin', event.target.value);
+  };
 
   return (
     <Container maxWidth="md">
@@ -102,7 +107,21 @@ const EditLecturer = () => {
           }
         />
 
-        <TextField
+        <FormControl fullWidth>
+          <InputLabel id="is_admin-select">Admin</InputLabel>
+          <Select
+            labelId="is_admin-select"
+            id="demo-simple-select"
+            value={formik.values.is_admin}
+            label="is_admin"
+            onChange={handleChange}
+          >
+            <MenuItem value={false}>False</MenuItem>
+            <MenuItem value={true}>True</MenuItem>
+          </Select>
+        </FormControl>
+
+        {/* <TextField
           id="is_admin"
           label="Admin"
           variant="standard"
@@ -118,7 +137,7 @@ const EditLecturer = () => {
                 : ' '
               : ' '
           }
-        />
+        /> */}
 
         <Button type="submit" variant="contained" fullWidth>
           Ubah
