@@ -142,7 +142,7 @@ const ProsesData = () => {
               <Typography>Hasil Perangkingan</Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <div style={{ height: 300, width: '100%' }}>
+              <div style={{ height: 310, width: '100%' }}>
                 <DataGrid
                   rows={finalData ? finalData : []}
                   columns={columns}

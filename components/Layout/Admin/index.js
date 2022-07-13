@@ -40,7 +40,7 @@ const LayoutUsers = ({ pageTitle, children: content }) => {
     {
       label: 'Home',
       icon: <HomeIcon color="primary" />,
-      path: '/admin/home',
+      path: '/admin',
     },
     {
       label: 'Data Mahasiswa',

@@ -24,22 +24,22 @@ const Perangkingan = ({ setFinalData, setStudent }) => {
 
   const [value, setValue] = React.useState(null);
   const [inputValue, setInputValue] = React.useState('');
-  console.log('value', value);
+  //console.log('value', value);
 
   const [selectedLecturers, setSelectedLecturer] = React.useState([]);
   const [inputLecturer, setInputLecturer] = React.useState('');
-  console.log('selectedLecturers', selectedLecturers);
+  //console.log('selectedLecturers', selectedLecturers);
 
   const [selectedCriteria, setSelectedCriteria] = React.useState([]);
   const [inputCriteria, setInputCriteria] = React.useState('');
-  console.log('selectedCriteria', selectedCriteria);
+  //console.log('selectedCriteria', selectedCriteria);
 
   const handleProcess = async () => {
     try {
       const response = await processData(selectedLecturers, selectedCriteria);
       setFinalData(response);
     } catch (error) {
-      toast('Data tidak sesuai');
+      toast.error('Data Kriteria tidak sama');
     }
   };
 

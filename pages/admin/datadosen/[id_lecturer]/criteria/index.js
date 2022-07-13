@@ -85,6 +85,7 @@ const Criteria = () => {
     id_lecturer ? `/api/lecturer/${id_lecturer}/criteria` : null,
     () => getCriteriaByIdLecturer(id_lecturer)
   );
+  console.log(data);
   const { mutate } = useSWRConfig(useSWR);
   mutate(
     `/api/lecturer/${id_lecturer}/criteria`,
