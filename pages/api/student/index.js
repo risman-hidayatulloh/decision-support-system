@@ -5,7 +5,11 @@ const prisma = new PrismaClient();
 
 const handler = nc()
   .get(async (req, res) => {
-    const student = await prisma.student.findMany();
+    const student = await prisma.student.findMany({
+      orderBy: {
+        expertise: 'asc',
+      },
+    });
     res.json(student);
   })
   .post(async (req, res) => {

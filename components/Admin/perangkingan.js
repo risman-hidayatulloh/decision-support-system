@@ -43,6 +43,21 @@ const Perangkingan = ({ setFinalData, setStudent }) => {
     }
   };
 
+  // const optionsLecturer = lecturer.map((option) => {
+  //   const firstKBK = option.expertise[0].toUpperCase();
+  //   return {
+  //     firstKBK,
+  //     ...option,
+  //   };
+  // });
+  // const optionsStudent = student.map((option) => {
+  //   const firstMHS = option.expertise[0].toUpperCase();
+  //   return {
+  //     firstMHS,
+  //     ...option,
+  //   };
+  // });
+
   return (
     <>
       <Typography variant="h6" gutterBottom component="div">
@@ -65,24 +80,30 @@ const Perangkingan = ({ setFinalData, setStudent }) => {
               setInputValue(newInputValue);
             }}
             id="controllable-states-demo"
+            // options={optionsStudent.sort(
+            //   (a, b) => -b.firstMHS.localeCompare(a.firstMHS)
+            // )}
             options={student ? student : []}
-            sx={{ width: '40%' }}
+            groupBy={(option) => option.expertise}
+            sx={{ width: '100%' }}
             renderInput={(params) => (
-              <TextField {...params} label="Mahasiswa" />
+              <TextField
+                {...params}
+                label="Input Berdasarkan NIM/Nama Mahasiswa"
+              />
             )}
             getOptionLabel={(option) =>
               option.nim +
-              ' ' +
+              ' - ' +
               option.name_student +
-              ' ' +
-              '[' +
-              option.expertise +
+              ' [' +
+              option.thesis_title +
               ']'
             }
             renderOption={(props, option) => {
               return (
                 <li {...props} key={option.id_student}>
-                  [{option.expertise}] {option.nim} {option.name_student}
+                  {option.nim} {option.name_student}
                 </li>
               );
             }}
@@ -98,7 +119,11 @@ const Perangkingan = ({ setFinalData, setStudent }) => {
           <Autocomplete
             multiple
             id="checkboxes-tags-demo"
+            // options={optionsLecturer.sort(
+            //   (a, b) => -b.firstKBK.localeCompare(a.firstKBK)
+            // )}
             options={lecturer ? lecturer : []}
+            groupBy={(option) => option.expertise}
             disableCloseOnSelect
             getOptionLabel={(option) => option.name_lecturer}
             renderOption={(props, option, { selected }) => (
@@ -114,7 +139,11 @@ const Perangkingan = ({ setFinalData, setStudent }) => {
             )}
             style={{ width: '100%' }}
             renderInput={(params) => (
-              <TextField {...params} label="Dosen" placeholder="Dosen" />
+              <TextField
+                {...params}
+                label="Input Berdasarkan KBK / ALL"
+                //placeholder="All / KBK"
+              />
             )}
             value={selectedLecturers}
             onChange={(event, newValue) => {
@@ -152,7 +181,7 @@ const Perangkingan = ({ setFinalData, setStudent }) => {
             )}
             style={{ width: '100%' }}
             renderInput={(params) => (
-              <TextField {...params} label="Kriteria" placeholder="Kriteria" />
+              <TextField {...params} label="Input Berdasarkan Semua Kriteria" />
             )}
             value={selectedCriteria}
             onChange={(event, newValue) => {

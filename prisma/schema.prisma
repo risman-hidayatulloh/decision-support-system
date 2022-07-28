@@ -45,6 +45,7 @@ model lecturer {
   id_user           Int
   name_lecturer     String              @db.VarChar(255)
   is_admin          Boolean
+  expertise         String              @db.VarChar(255)
   user              user                @relation(fields: [id_user], references: [id_user], onDelete: NoAction, onUpdate: NoAction, map: "fk_121")
   criteria_lecturer criteria_lecturer[]
 

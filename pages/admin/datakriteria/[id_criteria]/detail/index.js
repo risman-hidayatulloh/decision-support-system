@@ -17,7 +17,7 @@ const columns = [
   {
     field: 'description',
     headerName: 'Keterangan',
-    width: 210,
+    width: 230,
   },
   {
     field: 'fuzzy',
@@ -48,7 +48,7 @@ const columns = [
           >
             Edit
           </Button>
-          <Button
+          {/* <Button
             variant="contained"
             color="primary"
             onClick={() => {
@@ -60,7 +60,7 @@ const columns = [
             }}
           >
             Delete
-          </Button>
+          </Button> */}
         </Box>
       );
     },

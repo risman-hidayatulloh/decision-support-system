@@ -68,7 +68,7 @@ const Kriteria = () => {
         const { row } = params;
         return row.detail_criteria.criteria.name_criteria;
       },
-      width: 210,
+      width: 250,
     },
     {
       field: 'description',
@@ -77,7 +77,7 @@ const Kriteria = () => {
         const { row } = params;
         return row.detail_criteria.description;
       },
-      width: 200,
+      width: 250,
     },
   ];
 
@@ -124,7 +124,7 @@ const Kriteria = () => {
               }}
             />
           </Box>
-          <Box
+          {/* <Box
             sx={{
               display: 'flex',
               flexDirection: 'column',
@@ -199,7 +199,7 @@ const Kriteria = () => {
             <Button variant="contained" onClick={addCriteriaLecturer}>
               Simpan
             </Button>
-          </Box>
+          </Box> */}
         </>
         {/* output */}
         <Accordion>
@@ -211,7 +211,7 @@ const Kriteria = () => {
             <Typography>Hasil Kriteria</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <div style={{ height: 310, width: '100%' }}>
+            <div style={{ height: 530, width: '100%' }}>
               <DataGrid
                 rows={process ? process : []}
                 columns={columns}

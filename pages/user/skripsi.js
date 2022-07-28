@@ -18,12 +18,6 @@ const columns = [
     editable: true,
   },
   {
-    field: 'document',
-    headerName: 'File Proposal .pdf',
-    width: 150,
-    editable: true,
-  },
-  {
     field: 'action',
     headerName: 'Action',
     renderCell: (cellValues) => {
@@ -49,23 +43,26 @@ const rows = [
     id: 1602474,
     thesis_title: 'Sistem Otomatis Selesai Skripsi',
     expertise: 'Rekayasa Perangkat Lunak',
-    document: 'filesso.pdf',
   },
 ];
 
 export default function skripsi() {
   return (
-    <LayoutUsers pageTitle="Home">
-      <div style={{ height: 200, width: '100%' }}>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[]}
-          //checkboxSelection
-          disableSelectionOnClick
-        />
-      </div>
-    </LayoutUsers>
+    <>
+      <LayoutUsers pageTitle="Home">
+        <>
+          <div style={{ height: 200, width: '100%' }}>
+            <DataGrid
+              rows={rows}
+              columns={columns}
+              pageSize={5}
+              rowsPerPageOptions={[]}
+              //checkboxSelection
+              disableSelectionOnClick
+            />
+          </div>
+        </>
+      </LayoutUsers>
+    </>
   );
 }

@@ -40,6 +40,7 @@ const EditCriteriaLecturer = () => {
       console.log('values', values);
     },
   });
+  console.log('formik.values', formik.values);
 
   const { data } = useSWR(
     edit ? `/api/criteria_lecturer/${edit}/criteria?${edit}` : null,
@@ -50,6 +51,7 @@ const EditCriteriaLecturer = () => {
 
   useEffect(() => {
     if (data) {
+      console.log(data);
       setValues(data);
       console.log('data', data);
     }
@@ -68,7 +70,29 @@ const EditCriteriaLecturer = () => {
         autoComplete="off"
         onSubmit={formik.handleSubmit}
       >
-        tes
+        <TextField
+          id="id_detail_criteria"
+          label="Keterangan"
+          variant="standard"
+          fullWidth
+          value={formik.values.id_detail_criteria}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={
+            formik.touched.id_detail_criteria &&
+            Boolean(formik.errors.id_detail_criteria)
+          }
+          helperText={
+            formik.touched.id_detail_criteria
+              ? formik.errors.id_detail_criteria
+                ? formik.errors.id_detail_criteria
+                : ' '
+              : ' '
+          }
+        />
+        <Button type="submit" variant="contained" fullWidth>
+          Ubah
+        </Button>
       </Box>
     </Container>
   );

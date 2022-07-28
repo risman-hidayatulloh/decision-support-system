@@ -17,6 +17,11 @@ const columns = [
     width: 230,
   },
   {
+    field: 'expertise',
+    headerName: 'Bidang Keahlian',
+    width: 230,
+  },
+  {
     field: 'action',
     headerName: 'Aksi',
     renderCell: (cellValues) => {
@@ -42,7 +47,7 @@ const columns = [
           >
             Criteria
           </Button>
-          <Button
+          {/* <Button
             variant="contained"
             color="primary"
             onClick={() => {
@@ -56,7 +61,7 @@ const columns = [
             }}
           >
             Delete
-          </Button>
+          </Button> */}
         </Box>
       );
     },

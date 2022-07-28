@@ -20,10 +20,13 @@ const AddLecturer = () => {
       is_admin: false,
       email: '',
       password: '',
+      expertise: 'RPL dan Manajemen Informasi',
     },
     validationSchema: yup.object({
       nip: yup.string().required('NIP is required'),
       name_lecturer: yup.string().required('Name is required'),
+      email: yup.string().required('Email is required'),
+      password: yup.string().required('Password is required'),
     }),
     onSubmit: async (values) => {
       try {
@@ -39,8 +42,11 @@ const AddLecturer = () => {
   const { setFieldValue } = formik;
 
   const handleChange = (event) => {
-    setFieldValue('is_admin', event.target.value);
+    setFieldValue('expertise', event.target.value);
+    //setFieldValue('is_admin', event.target.value);
   };
+
+  //console.log(formik.values);
 
   return (
     <Container maxWidth="md">
@@ -110,18 +116,44 @@ const AddLecturer = () => {
         /> */}
 
         <FormControl fullWidth>
-          <InputLabel id="is_admin-select">Admin</InputLabel>
+          <InputLabel id="expertise-select">Bidang Keahlian</InputLabel>
           <Select
-            labelId="is_admin-select"
+            labelId="expertise-select"
             id="demo-simple-select"
-            value={formik.values.is_admin}
-            label="is_admin"
+            value={formik.values.expertise}
+            label="Bidang Keahlian"
             onChange={handleChange}
           >
-            <MenuItem value={false}>False</MenuItem>
-            <MenuItem value={true}>True</MenuItem>
+            <MenuItem value={'RPL dan Manajemen Informasi'}>
+              RPL dan Manajemen Informasi
+            </MenuItem>
+            <MenuItem value={'Multimedia dan Jaringan'}>
+              Multimedia dan Jaringan
+            </MenuItem>
+            <MenuItem value={'Kecerdasan Artifisial'}>
+              Kecerdasan Artifisial
+            </MenuItem>
           </Select>
         </FormControl>
+
+        {/* <TextField
+          id="is_admin"
+          label="Admin (false/true)"
+          variant="standard"
+          fullWidth
+          type={boolean}
+          value={formik.values.is_admin}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.is_admin && Boolean(formik.errors.is_admin)}
+          helperText={
+            formik.touched.is_admin
+              ? formik.errors.is_admin
+                ? formik.errors.is_admin
+                : ' '
+              : ' '
+          }
+        /> */}
 
         <TextField
           id="email"

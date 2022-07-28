@@ -57,7 +57,7 @@ const columns = [
           >
             Detail
           </Button>
-          <Button
+          {/* <Button
             variant="contained"
             color="primary"
             onClick={() => {
@@ -72,7 +72,7 @@ const columns = [
             }}
           >
             Delete
-          </Button>
+          </Button> */}
         </Box>
       );
     },
@@ -97,13 +97,13 @@ const DataKriteria = () => {
             <EditCriteria />
           ) : (
             <>
-              <Button
+              {/* <Button
                 variant="contained"
                 sx={{ mb: 2 }}
                 onClick={() => router.push('/admin/datakriteria?add=true')}
               >
                 Add Criteria
-              </Button>
+              </Button> */}
               <div style={{ height: 640, width: '100%' }}>
                 <DataGrid
                   rows={data ? data : []}

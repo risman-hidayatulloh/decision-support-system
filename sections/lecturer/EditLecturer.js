@@ -21,6 +21,7 @@ const EditLecturer = () => {
       nip: '',
       name_lecturer: '',
       is_admin: '',
+      expertise: '',
     },
     validationSchema: yup.object({
       nip: yup.string().required('NIP is required'),

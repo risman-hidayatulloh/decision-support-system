@@ -5,11 +5,17 @@ const prisma = new PrismaClient();
 
 const handler = nc()
   .get(async (req, res) => {
-    const lecturer = await prisma.lecturer.findMany();
+    const lecturer = await prisma.lecturer.findMany({
+      orderBy: {
+        expertise: 'asc',
+      },
+    });
+    //console.log(lecturer);
     res.json(lecturer);
   })
   .post(async (req, res) => {
-    const { email, password, nip, name_lecturer, is_admin } = req.body;
+    const { email, password, nip, name_lecturer, is_admin, expertise } =
+      req.body;
     const user = await prisma.user.create({
       data: {
         email,
@@ -22,6 +28,7 @@ const handler = nc()
         nip,
         name_lecturer,
         is_admin,
+        expertise,
       },
     });
     res.json(lecturer);
