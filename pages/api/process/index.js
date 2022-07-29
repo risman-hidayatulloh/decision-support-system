@@ -1,30 +1,12 @@
 import nc from 'next-connect';
 
-import { getSession } from 'next-auth/react';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
 const handler = nc().post(async (req, res) => {
   try {
-    const { lecturer, criteria } = req.body;
-
-    const session = await getSession({ req });
-
-    const { id_user } = session.user;
-
-    if (!id_user) {
-      res.status(403).json({
-        message: 'Forbidden',
-      });
-      return;
-    }
-
-    const student = await prisma.student.findFirst({
-      where: {
-        id_user,
-      },
-    });
+    const { student } = req.body;
 
     const grouped_criteria_lecturer = await prisma.criteria_lecturer.groupBy({
       by: ['id_lecturer'],

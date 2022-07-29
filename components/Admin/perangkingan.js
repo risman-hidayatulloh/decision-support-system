@@ -36,7 +36,11 @@ const Perangkingan = ({ setFinalData, setStudent }) => {
 
   const handleProcess = async () => {
     try {
-      const response = await processData(selectedLecturers, selectedCriteria);
+      const response = await processData(
+        selectedLecturers,
+        selectedCriteria,
+        value
+      );
       setFinalData(response);
     } catch (error) {
       toast.error('Data Kriteria tidak sama');
