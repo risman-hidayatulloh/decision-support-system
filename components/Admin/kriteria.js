@@ -113,7 +113,12 @@ const Kriteria = () => {
               id="controllable-states-demo"
               options={lecturer ? lecturer : []}
               sx={{ width: '40%' }}
-              renderInput={(params) => <TextField {...params} label="Dosen" />}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Input Nama Dosen Untuk Melihat Kriteria"
+                />
+              )}
               getOptionLabel={(option) => option.name_lecturer}
               renderOption={(props, option) => {
                 return (

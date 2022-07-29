@@ -37,10 +37,8 @@ const EditCriteriaLecturer = () => {
       } catch (error) {
         console.log(error);
       }
-      console.log('values', values);
     },
   });
-  console.log('formik.values', formik.values);
 
   const { data } = useSWR(
     edit ? `/api/criteria_lecturer/${edit}/criteria?${edit}` : null,
@@ -51,9 +49,8 @@ const EditCriteriaLecturer = () => {
 
   useEffect(() => {
     if (data) {
-      console.log(data);
       setValues(data);
-      console.log('data', data);
+      console.log('data', data.id_detail_criteria);
     }
   }, [data]);
 
@@ -90,6 +87,7 @@ const EditCriteriaLecturer = () => {
               : ' '
           }
         />
+
         <Button type="submit" variant="contained" fullWidth>
           Ubah
         </Button>

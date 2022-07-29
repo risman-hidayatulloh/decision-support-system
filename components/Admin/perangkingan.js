@@ -109,7 +109,7 @@ const Perangkingan = ({ setFinalData, setStudent }) => {
             }}
           />
         </Box>
-        <Box
+        {/* <Box
           sx={{
             display: 'flex',
             flexDirection: 'column',
@@ -154,8 +154,8 @@ const Perangkingan = ({ setFinalData, setStudent }) => {
               setInputLecturer(newInputValue);
             }}
           />
-        </Box>
-        <Box
+        </Box> */}
+        {/* <Box
           sx={{
             display: 'flex',
             flexDirection: 'column',
@@ -192,7 +192,7 @@ const Perangkingan = ({ setFinalData, setStudent }) => {
               setInputCriteria(newInputValue);
             }}
           />
-        </Box>
+        </Box> */}
         <Box
           sx={{
             display: 'flex',

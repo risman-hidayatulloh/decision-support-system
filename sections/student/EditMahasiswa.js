@@ -38,7 +38,7 @@ const EditMahasiswa = () => {
       } catch (error) {
         console.log(error);
       }
-      console.log(values);
+      //console.log(values);
     },
   });
 
@@ -46,7 +46,7 @@ const EditMahasiswa = () => {
     getStudent(edit)
   );
 
-  console.log(data);
+  //console.log(data);
 
   const { setValues, setFieldValue } = formik;
 
@@ -54,8 +54,8 @@ const EditMahasiswa = () => {
     if (data) {
       //console.log(data);
       const { id_user, ...tempValues } = data;
-      console.log(tempValues);
-      //setValues(tempValues);
+      //console.log(tempValues);
+      setValues(tempValues);
     }
   }, [data]);
 
