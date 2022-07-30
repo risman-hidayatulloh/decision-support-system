@@ -14,7 +14,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Box } from '@mui/material';
-import { addResult } from '../../../lib/fetcher/result';
+import { addResult, getStudentResult } from '../../../lib/fetcher/result';
 import { toast } from 'react-toastify';
 
 const useSupervisorStore = create((set) => ({
@@ -42,6 +42,16 @@ const columns = [
   {
     field: 'total_saw',
     headerName: 'Skor',
+    width: 250,
+  },
+  {
+    field: 'totalAsFirstSupervisor',
+    headerName: 'Total Menjadi Pembimbing 1',
+    width: 250,
+  },
+  {
+    field: 'totalAsSecondSupervisor',
+    headerName: 'Total Menjadi Pembimbing 2',
     width: 250,
   },
   {
@@ -100,6 +110,13 @@ const ProsesData = () => {
   const [pageSize, setPageSize] = React.useState(10);
   const [finalData, setFinalData] = React.useState(null);
 
+  const { data } = useSWR(
+    student
+      ? `http://localhost:3000/api/student/${student.id_student}/result`
+      : null,
+    () => getStudentResult(student.id_student)
+  );
+
   const { first, second } = useSupervisorStore((state) => ({
     ...state,
   }));
@@ -108,13 +125,13 @@ const ProsesData = () => {
     try {
       await addResult([
         {
-          ranking_results: first?.rank,
+          ranking_results: 1,
           id_student: student.id_student,
           score: first?.score,
           id_supervisor: first?.id_lecturer,
         },
         {
-          ranking_results: second?.rank,
+          ranking_results: 2,
           id_student: student.id_student,
           score: second?.score,
           id_supervisor: second?.id_lecturer,
@@ -160,10 +177,17 @@ const ProsesData = () => {
               >
                 <Typography>Pembimbing 1 : {first?.name_lecturer} </Typography>
                 <Typography>Pembimbing 2 : {second?.name_lecturer} </Typography>
-                <Box>
-                  <Button onClick={handleSubmit} variant="contained">
+                <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+                  <Button
+                    onClick={handleSubmit}
+                    variant="contained"
+                    disabled={data?.length !== 0}
+                  >
                     Submit
                   </Button>
+                  {data?.length !== 0 && data !== undefined && (
+                    <Typography>Hasil telah ada</Typography>
+                  )}
                 </Box>
               </Box>
             </AccordionDetails>

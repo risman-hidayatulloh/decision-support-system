@@ -8,7 +8,7 @@ const handler = nc().post(async (req, res) => {
   try {
     const { student } = req.body;
 
-    const grouped_criteria_lecturer = await prisma.criteria_lecturer.groupBy({
+    let grouped_criteria_lecturer = await prisma.criteria_lecturer.groupBy({
       by: ['id_lecturer'],
       where: {
         lecturer: {
@@ -16,6 +16,64 @@ const handler = nc().post(async (req, res) => {
         },
       },
     });
+
+    const fist_supervisor_list = await prisma.lecturer.findMany({
+      where: {
+        id_lecturer: {
+          in: grouped_criteria_lecturer.map((item) => item.id_lecturer),
+        },
+        result: {
+          some: {
+            ranking_results: 1,
+          },
+        },
+      },
+      select: {
+        _count: {
+          select: {
+            result: true,
+          },
+        },
+        name_lecturer: true,
+        id_lecturer: true,
+      },
+    });
+
+    const second_supervisor_list = await prisma.lecturer.findMany({
+      where: {
+        id_lecturer: {
+          in: grouped_criteria_lecturer.map((item) => item.id_lecturer),
+        },
+        result: {
+          some: {
+            ranking_results: 2,
+          },
+        },
+      },
+      select: {
+        _count: {
+          select: {
+            result: true,
+          },
+        },
+        name_lecturer: true,
+        id_lecturer: true,
+      },
+    });
+
+    const moreThan10First = fist_supervisor_list?.find(
+      (item) => item._count.result > 10
+    );
+
+    const moreThan10Second = second_supervisor_list?.find(
+      (item) => item._count.result > 10
+    );
+
+    if (moreThan10First || moreThan10Second) {
+      grouped_criteria_lecturer = await prisma.criteria_lecturer.groupBy({
+        by: ['id_lecturer'],
+      });
+    }
 
     const list_group_criteria_lecturer = await Promise.all(
       grouped_criteria_lecturer.map((item) =>
@@ -29,7 +87,11 @@ const handler = nc().post(async (req, res) => {
                 criteria: true,
               },
             },
-            lecturer: true,
+            lecturer: {
+              include: {
+                result: true,
+              },
+            },
           },
           orderBy: {
             id_detail_criteria: 'asc',
@@ -101,6 +163,14 @@ const handler = nc().post(async (req, res) => {
           0
         ),
         lecturer: list_group_criteria_lecturer[0].lecturer,
+        totalAsFirstSupervisor:
+          list_group_criteria_lecturer[0].lecturer.result.filter(
+            (item) => item.ranking_results === 1
+          ).length,
+        totalAsSecondSupervisor:
+          list_group_criteria_lecturer[0].lecturer.result.filter(
+            (item) => item.ranking_results === 2
+          ).length,
       })
     );
 

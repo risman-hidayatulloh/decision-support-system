@@ -10,6 +10,9 @@ const handler = nc()
       where: {
         id_criteria_lecturer: Number(id),
       },
+      include: {
+        detail_criteria: true,
+      },
     });
     res.json(criteria_lecturer);
   })
