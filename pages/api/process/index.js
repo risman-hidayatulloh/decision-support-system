@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 const handler = nc().post(async (req, res) => {
   try {
     const { student } = req.body;
-
+    //Rangking with KBK
     let grouped_criteria_lecturer = await prisma.criteria_lecturer.groupBy({
       by: ['id_lecturer'],
       where: {
@@ -61,6 +61,7 @@ const handler = nc().post(async (req, res) => {
       },
     });
 
+    //Rangking with All Lecturer where >10
     const moreThan10First = fist_supervisor_list?.find(
       (item) => item._count.result > 10
     );
