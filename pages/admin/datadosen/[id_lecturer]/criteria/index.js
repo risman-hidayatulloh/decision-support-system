@@ -21,7 +21,7 @@ const columns = [
       const { row } = params;
       return row.detail_criteria.criteria.name_criteria;
     },
-    width: 210,
+    width: 230,
   },
   {
     field: 'description',
@@ -30,50 +30,50 @@ const columns = [
       const { row } = params;
       return row.detail_criteria.description;
     },
-    width: 200,
+    width: 250,
   },
-  {
-    field: 'action',
-    headerName: 'Aksi',
-    renderCell: (cellValues) => {
-      const router = useRouter();
-      const { mutate } = useSWRConfig();
-      return (
-        <Box sx={{ display: 'flex', gap: 1 }}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() =>
-              router.push(
-                `/admin/datadosen/${cellValues.row.id_lecturer}/criteria?edit=${cellValues.id}`
-              )
-            }
-          >
-            Edit
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => {
-              try {
-                deleteCriteria_Lecturer(cellValues.id);
-                console.log('delete', cellValues.id);
-                mutate(
-                  `/api/lecturer/${cellValues.row.id_lecturer}/criteria`,
-                  getCriteriaByIdLecturer(cellValues.id)
-                );
-              } catch (error) {
-                console.log(error);
-              }
-            }}
-          >
-            Delete
-          </Button>
-        </Box>
-      );
-    },
-    width: 180,
-  },
+  // {
+  //   field: 'action',
+  //   headerName: 'Aksi',
+  //   renderCell: (cellValues) => {
+  //     const router = useRouter();
+  //     const { mutate } = useSWRConfig();
+  //     return (
+  //       <Box sx={{ display: 'flex', gap: 1 }}>
+  //         <Button
+  //           variant="contained"
+  //           color="primary"
+  //           onClick={() =>
+  //             router.push(
+  //               `/admin/datadosen/${cellValues.row.id_lecturer}/criteria?edit=${cellValues.id}`
+  //             )
+  //           }
+  //         >
+  //           Edit
+  //         </Button>
+  //         <Button
+  //           variant="contained"
+  //           color="primary"
+  //           onClick={() => {
+  //             try {
+  //               deleteCriteria_Lecturer(cellValues.id);
+  //               console.log('delete', cellValues.id);
+  //               mutate(
+  //                 `/api/lecturer/${cellValues.row.id_lecturer}/criteria`,
+  //                 getCriteriaByIdLecturer(cellValues.id)
+  //               );
+  //             } catch (error) {
+  //               console.log(error);
+  //             }
+  //           }}
+  //         >
+  //           Delete
+  //         </Button>
+  //       </Box>
+  //     );
+  //   },
+  //   width: 180,
+  // },
 ];
 
 const Criteria = () => {

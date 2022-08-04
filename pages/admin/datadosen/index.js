@@ -29,7 +29,7 @@ const columns = [
       const { mutate } = useSWRConfig();
       return (
         <Box sx={{ display: 'flex', gap: 1 }}>
-          <Button
+          {/* <Button
             variant="contained"
             color="primary"
             onClick={() =>
@@ -37,7 +37,7 @@ const columns = [
             }
           >
             Edit
-          </Button>
+          </Button> */}
           <Button
             variant="contained"
             color="primary"
@@ -45,7 +45,7 @@ const columns = [
               router.push(`/admin/datadosen/${cellValues.id}/criteria`);
             }}
           >
-            Criteria
+            Detail
           </Button>
           {/* <Button
             variant="contained"
@@ -85,13 +85,13 @@ const DataDosen = () => {
             <EditLecturer />
           ) : (
             <>
-              <Button
+              {/* <Button
                 variant="contained"
                 sx={{ mb: 2 }}
                 onClick={() => router.push('/admin/datadosen?add=true')}
               >
                 Add Lecturer
-              </Button>
+              </Button> */}
               <div style={{ height: 640, width: '100%' }}>
                 <DataGrid
                   rows={data ? data : []}

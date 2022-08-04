@@ -17,7 +17,7 @@ const columns = [
   {
     field: 'description',
     headerName: 'Keterangan',
-    width: 230,
+    width: 300,
   },
   {
     field: 'fuzzy',
@@ -27,45 +27,45 @@ const columns = [
   {
     field: 'variable',
     headerName: 'Variabel',
-    width: 200,
+    width: 300,
   },
-  {
-    field: 'action',
-    headerName: 'Aksi',
-    renderCell: (cellValues) => {
-      const router = useRouter();
-      const { mutate } = useSWRConfig();
-      return (
-        <Box sx={{ display: 'flex', gap: 1 }}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() =>
-              router.push(
-                `/admin/datakriteria/${cellValues.row.id_criteria}/detail?edit=${cellValues.id}`
-              )
-            }
-          >
-            Edit
-          </Button>
-          {/* <Button
-            variant="contained"
-            color="primary"
-            onClick={() => {
-              deleteDetail_Criteria(cellValues.id);
-              mutate(
-                `/api/criteria/${cellValues.row.id_criteria}/detail`,
-                getDetailByIdCriteria(cellValues.id)
-              );
-            }}
-          >
-            Delete
-          </Button> */}
-        </Box>
-      );
-    },
-    width: 190,
-  },
+  // {
+  //   field: 'action',
+  //   headerName: 'Aksi',
+  //   renderCell: (cellValues) => {
+  //     const router = useRouter();
+  //     const { mutate } = useSWRConfig();
+  //     return (
+  //       <Box sx={{ display: 'flex', gap: 1 }}>
+  //         <Button
+  //           variant="contained"
+  //           color="primary"
+  //           onClick={() =>
+  //             router.push(
+  //               `/admin/datakriteria/${cellValues.row.id_criteria}/detail?edit=${cellValues.id}`
+  //             )
+  //           }
+  //         >
+  //           Edit
+  //         </Button>
+  //         <Button
+  //           variant="contained"
+  //           color="primary"
+  //           onClick={() => {
+  //             deleteDetail_Criteria(cellValues.id);
+  //             mutate(
+  //               `/api/criteria/${cellValues.row.id_criteria}/detail`,
+  //               getDetailByIdCriteria(cellValues.id)
+  //             );
+  //           }}
+  //         >
+  //           Delete
+  //         </Button>
+  //       </Box>
+  //     );
+  //   },
+  //   width: 190,
+  // },
 ];
 
 const Detail = () => {
@@ -93,7 +93,7 @@ const Detail = () => {
             <EditDetail />
           ) : (
             <>
-              <Button
+              {/* <Button
                 variant="contained"
                 sx={{ mb: 2 }}
                 onClick={() =>
@@ -103,7 +103,7 @@ const Detail = () => {
                 }
               >
                 Add Detail Criteria
-              </Button>
+              </Button> */}
               <Box sx={{ height: 640, width: '100%' }}>
                 <DataGrid
                   rows={data ? data : []}

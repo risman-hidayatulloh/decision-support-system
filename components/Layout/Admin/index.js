@@ -58,7 +58,7 @@ const LayoutUsers = ({ pageTitle, children: content }) => {
       path: '/admin/datakriteria',
     },
     {
-      label: 'Proses Data',
+      label: 'Penentuan Pembimbing',
       icon: <ArticleIcon color="primary" />,
       path: '/admin/prosesdata',
     },
