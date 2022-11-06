@@ -48,8 +48,10 @@ model lecturer {
   expertise         String              @db.VarChar(255)
   user              user                @relation(fields: [id_user], references: [id_user], onDelete: NoAction, onUpdate: NoAction, map: "fk_121")
   criteria_lecturer criteria_lecturer[]
+  dataset           dataset[]
 
   result result[]
+
   @@index([id_user], map: "fk_123")
 }
 
@@ -66,15 +68,16 @@ model result {
 }
 
 model student {
-  id_student   Int      @id(map: "pk_14") @default(autoincrement())
-  nim          String   @db.VarChar(255)
+  id_student   Int       @id(map: "pk_14") @default(autoincrement())
+  nim          String    @db.VarChar(255)
   id_user      Int
-  name_student String   @db.VarChar(255)
-  thesis_title String   @db.VarChar(255)
-  expertise    String   @db.VarChar(255)
-  document     String   @db.VarChar(255)
-  user         user     @relation(fields: [id_user], references: [id_user], onDelete: NoAction, onUpdate: NoAction, map: "fk_53")
+  name_student String    @db.VarChar(255)
+  thesis_title String    @db.VarChar(255)
+  expertise    String    @db.VarChar(255)
+  document     String    @db.VarChar(255)
+  user         user      @relation(fields: [id_user], references: [id_user], onDelete: NoAction, onUpdate: NoAction, map: "fk_53")
   result       result[]
+  dataset      dataset[]
 
   @@index([id_user], map: "fk_55")
 }
@@ -85,4 +88,13 @@ model user {
   password String     @db.VarChar(255)
   lecturer lecturer[]
   student  student[]
+}
+
+model dataset {
+  id_dataset  Int      @id(map: "pk_153") @default(autoincrement())
+  id_student  Int
+  id_lecturer Int
+  student     student  @relation(fields: [id_student], references: [id_student], onDelete: NoAction, onUpdate: NoAction, map: "fk_163")
+  lecturer    lecturer @relation(fields: [id_lecturer], references: [id_lecturer], onDelete: NoAction, onUpdate: NoAction, map: "fk_169")
+  isStatus    String   @db.VarChar(255)
 }

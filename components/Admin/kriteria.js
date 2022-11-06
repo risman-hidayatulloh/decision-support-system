@@ -99,6 +99,7 @@ const Kriteria = () => {
               display: 'flex',
               flexDirection: 'column',
               m: 3,
+              gap: 2,
             }}
           >
             <Autocomplete
@@ -128,15 +129,10 @@ const Kriteria = () => {
                 );
               }}
             />
-          </Box>
-          {/* <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              m: 3,
-            }}
-          >
-            <Autocomplete
+
+            {/* Input Kriteria dan Detail Kriteria */}
+
+            {/* <Autocomplete
               value={selectedCriteria}
               onChange={(event, newValue) => {
                 setSelectedCriteria(newValue);
@@ -160,14 +156,7 @@ const Kriteria = () => {
                 );
               }}
             />
-          </Box>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              m: 3,
-            }}
-          >
+
             <Autocomplete
               value={selectedDetailCriteria}
               onChange={(event, newValue) => {
@@ -192,44 +181,45 @@ const Kriteria = () => {
                 );
               }}
             />
+
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                width: '10%',
+              }}
+            >
+              <Button variant="contained" onClick={addCriteriaLecturer}>
+                Simpan
+              </Button>
+            </Box> */}
+
+            {/* output */}
+            <Accordion>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                <Typography>Hasil Kriteria</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <div style={{ height: 530, width: '100%' }}>
+                  <DataGrid
+                    rows={process ? process : []}
+                    columns={columns}
+                    pageSize={pageSize}
+                    onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+                    rowsPerPageOptions={[5, 10, 20]}
+                    pagination
+                    disableSelectionOnClick
+                    getRowId={(row) => row.id_criteria_lecturer}
+                  />
+                </div>
+              </AccordionDetails>
+            </Accordion>
           </Box>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              m: 3,
-              width: '10%',
-            }}
-          >
-            <Button variant="contained" onClick={addCriteriaLecturer}>
-              Simpan
-            </Button>
-          </Box> */}
         </>
-        {/* output */}
-        <Accordion>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
-          >
-            <Typography>Hasil Kriteria</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <div style={{ height: 530, width: '100%' }}>
-              <DataGrid
-                rows={process ? process : []}
-                columns={columns}
-                pageSize={pageSize}
-                onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-                rowsPerPageOptions={[5, 10, 20]}
-                pagination
-                disableSelectionOnClick
-                getRowId={(row) => row.id_criteria_lecturer}
-              />
-            </div>
-          </AccordionDetails>
-        </Accordion>
       </Typography>
     </>
   );

@@ -175,7 +175,7 @@ const EditMahasiswa = () => {
           }
         /> */}
 
-        <TextField
+        {/* <TextField
           id="document"
           label="File Dokumen"
           variant="standard"
@@ -191,7 +191,7 @@ const EditMahasiswa = () => {
                 : ' '
               : ' '
           }
-        />
+        /> */}
 
         <Button type="submit" variant="contained" fullWidth>
           Ubah

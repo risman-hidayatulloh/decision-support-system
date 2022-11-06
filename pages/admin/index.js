@@ -13,7 +13,6 @@ const Home = () => {
   return (
     <>
       <LayoutAdmin pageTitle="Home">
-        <Typography gutterBottom>Home</Typography>
         <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
           <ExpertiseChartStudent />
         </Box>

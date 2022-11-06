@@ -19,7 +19,7 @@ const columns = [
   {
     field: 'thesis_title',
     headerName: 'Judul Skripsi',
-    width: 1200,
+    width: 1000,
     editable: true,
   },
   {
@@ -33,53 +33,53 @@ const columns = [
   //   width: 150,
   //   editable: true,
   // },
-  // {
-  //   field: 'action',
-  //   headerName: 'Aksi',
-  //   renderCell: (cellValues) => {
-  //     const router = useRouter();
-  //     const { mutate } = useSWRConfig();
-  //     return (
-  //       <Box sx={{ display: 'flex', gap: 1 }}>
-  //         <Button
-  //           variant="contained"
-  //           color="primary"
-  //           onClick={() =>
-  //             router.push(`/admin/datamahasiswa?edit=${cellValues.id}`)
-  //           }
-  //         >
-  //           Edit
-  //         </Button>
-  //         <Button
-  //           variant="contained"
-  //           color="primary"
-  //           // onClick={() => {
-  //           //   router.push(`/admin/datamahasiswa/${cellValues.id}/supervisor`);
-  //           // }}
-  //         >
-  //           Supervisor
-  //         </Button>
+  {
+    field: 'action',
+    headerName: 'Aksi',
+    renderCell: (cellValues) => {
+      const router = useRouter();
+      const { mutate } = useSWRConfig();
+      return (
+        <Box sx={{ display: 'flex', gap: 1 }}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() =>
+              router.push(`/admin/datamahasiswa?edit=${cellValues.id}`)
+            }
+          >
+            Edit
+          </Button>
+          {/* <Button
+            variant="contained"
+            color="primary"
+            // onClick={() => {
+            //   router.push(`/admin/datamahasiswa/${cellValues.id}/supervisor`);
+            // }}
+          >
+            Supervisor
+          </Button> */}
 
-  //         <Button
-  //           variant="contained"
-  //           color="primary"
-  //           onClick={() => {
-  //             try {
-  //               deleteStudent(cellValues.id);
-  //               mutate('/api/student', getStudents);
-  //               window.location.reload();
-  //             } catch (error) {
-  //               console.log(error);
-  //             }
-  //           }}
-  //         >
-  //           delete
-  //         </Button>
-  //       </Box>
-  //     );
-  //   },
-  //   width: 320,
-  // },
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              try {
+                deleteStudent(cellValues.id);
+                mutate('/api/student', getStudents);
+                window.location.reload();
+              } catch (error) {
+                console.log(error);
+              }
+            }}
+          >
+            delete
+          </Button>
+        </Box>
+      );
+    },
+    width: 320,
+  },
 ];
 
 const DataMahasiswa = () => {

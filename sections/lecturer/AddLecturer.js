@@ -133,6 +133,18 @@ const AddLecturer = () => {
             <MenuItem value={'Kecerdasan Artifisial'}>
               Kecerdasan Artifisial
             </MenuItem>
+            <MenuItem value={'Didactical Pedagogical Digital'}>
+              Didactical Pedagogical Digital
+            </MenuItem>
+            <MenuItem value={'Smart Learning Environment'}>
+              Smart Learning Environment
+            </MenuItem>
+            <MenuItem value={'Koordinator Rumpun Bidang Pendidikan'}>
+              Koordinator Rumpun Bidang Pendidikan
+            </MenuItem>
+            <MenuItem value={'Dosen Luar Departemen Ilmu Komputer'}>
+              Dosen Luar Departemen Ilmu Komputer
+            </MenuItem>
           </Select>
         </FormControl>
 

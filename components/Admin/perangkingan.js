@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { getStudents } from '../../lib/fetcher/student';
 import { getLecturers } from '../../lib/fetcher/lecturer';
-import useSWR from 'swr';
+import useSWR, { useSWRConfig } from 'swr';
 import Checkbox from '@mui/material/Checkbox';
 import Autocomplete from '@mui/material/Autocomplete';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
@@ -24,7 +24,7 @@ const Perangkingan = ({ setFinalData, setStudent }) => {
 
   const [value, setValue] = React.useState(null);
   const [inputValue, setInputValue] = React.useState('');
-  //console.log('value', value);
+  //console.log('value', Value);
 
   const [selectedLecturers, setSelectedLecturer] = React.useState([]);
   const [inputLecturer, setInputLecturer] = React.useState('');
@@ -34,33 +34,23 @@ const Perangkingan = ({ setFinalData, setStudent }) => {
   const [inputCriteria, setInputCriteria] = React.useState('');
   //console.log('selectedCriteria', selectedCriteria);
 
+  const [maxSupervisor, setMaxSupervisor] = React.useState(10);
+  //const { mutate } = useSWRConfig();
+
   const handleProcess = async () => {
     try {
       const response = await processData(
         selectedLecturers,
         selectedCriteria,
-        value
+        value,
+        maxSupervisor
       );
       setFinalData(response);
+      //mutate('/api/process', processData);
     } catch (error) {
       toast.error('Data Kriteria tidak sama');
     }
   };
-
-  // const optionsLecturer = lecturer.map((option) => {
-  //   const firstKBK = option.expertise[0].toUpperCase();
-  //   return {
-  //     firstKBK,
-  //     ...option,
-  //   };
-  // });
-  // const optionsStudent = student.map((option) => {
-  //   const firstMHS = option.expertise[0].toUpperCase();
-  //   return {
-  //     firstMHS,
-  //     ...option,
-  //   };
-  // });
 
   return (
     <>
@@ -71,6 +61,7 @@ const Perangkingan = ({ setFinalData, setStudent }) => {
             display: 'flex',
             flexDirection: 'column',
             m: 3,
+            gap: 2,
           }}
         >
           <Autocomplete
@@ -84,9 +75,6 @@ const Perangkingan = ({ setFinalData, setStudent }) => {
               setInputValue(newInputValue);
             }}
             id="controllable-states-demo"
-            // options={optionsStudent.sort(
-            //   (a, b) => -b.firstMHS.localeCompare(a.firstMHS)
-            // )}
             options={student ? student : []}
             groupBy={(option) => option.expertise}
             sx={{ width: '100%' }}
@@ -112,8 +100,17 @@ const Perangkingan = ({ setFinalData, setStudent }) => {
               );
             }}
           />
-        </Box>
-        {/* <Box
+
+          <TextField
+            id="outlined-basic"
+            label="Input Maksimal Jumlah Kuota Bimbingan"
+            variant="outlined"
+            type="number"
+            value={maxSupervisor}
+            onChange={(e) => setMaxSupervisor(e.target.value)}
+          />
+
+          {/* <Box
           sx={{
             display: 'flex',
             flexDirection: 'column',
@@ -159,7 +156,7 @@ const Perangkingan = ({ setFinalData, setStudent }) => {
             }}
           />
         </Box> */}
-        {/* <Box
+          {/* <Box
           sx={{
             display: 'flex',
             flexDirection: 'column',
@@ -197,15 +194,16 @@ const Perangkingan = ({ setFinalData, setStudent }) => {
             }}
           />
         </Box> */}
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            m: 3,
-            width: '10%',
-          }}
-        >
-          <Button onClick={handleProcess} variant="contained">
+
+          <Button
+            onClick={handleProcess}
+            variant="contained"
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              width: '10%',
+            }}
+          >
             Proses
           </Button>
         </Box>

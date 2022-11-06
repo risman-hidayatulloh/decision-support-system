@@ -2,6 +2,7 @@ import * as React from 'react';
 import LayoutAdmin from '/components/Layout/Admin';
 import Perangkingan from '/components/Admin/perangkingan';
 import Kriteria from '/components/Admin/kriteria';
+import Quota from '/components/Admin/quota';
 import create from 'zustand';
 import Button from '@mui/material/Button';
 import { DataGrid } from '@mui/x-data-grid';
@@ -44,16 +45,16 @@ const columns = [
     headerName: 'Skor',
     width: 250,
   },
-  {
-    field: 'totalAsFirstSupervisor',
-    headerName: 'Total Menjadi Pembimbing 1',
-    width: 250,
-  },
-  {
-    field: 'totalAsSecondSupervisor',
-    headerName: 'Total Menjadi Pembimbing 2',
-    width: 250,
-  },
+  // {
+  //   field: 'totalAsFirstSupervisor',
+  //   headerName: 'Total Menjadi Pembimbing 1',
+  //   width: 250,
+  // },
+  // {
+  //   field: 'totalAsSecondSupervisor',
+  //   headerName: 'Total Menjadi Pembimbing 2',
+  //   width: 250,
+  // },
   {
     field: 'action',
     headerName: 'Aksi',
@@ -142,56 +143,78 @@ const ProsesData = () => {
     }
   };
 
+  const { mutate } = useSWRConfig();
+  mutate('/api/process');
+
   return (
     <>
-      <LayoutAdmin pageTitle="Proses Data">
+      <LayoutAdmin pageTitle="Proses Penentuan Pembimbing Skripsi">
         <>
           <Kriteria />
 
           <Perangkingan setFinalData={setFinalData} setStudent={setStudent} />
-
-          <Accordion>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1a-content"
-              id="panel1a-header"
-            >
-              <Typography>Hasil Perangkingan</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <div style={{ height: 310, width: '100%' }}>
-                <DataGrid
-                  rows={finalData ? finalData : []}
-                  columns={columns}
-                  pageSize={pageSize}
-                  onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-                  rowsPerPageOptions={[5, 10, 20]}
-                  pagination
-                  disableSelectionOnClick
-                  getRowId={(row) => row.lecturer.id_lecturer}
-                />
-              </div>
-
-              <Box
-                sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              m: 3,
+              gap: 2,
+            }}
+          >
+            <Accordion>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
               >
-                <Typography>Pembimbing 1 : {first?.name_lecturer} </Typography>
-                <Typography>Pembimbing 2 : {second?.name_lecturer} </Typography>
-                <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                  <Button
-                    onClick={handleSubmit}
-                    variant="contained"
-                    disabled={data?.length !== 0}
-                  >
-                    Submit
-                  </Button>
-                  {data?.length !== 0 && data !== undefined && (
-                    <Typography>Hasil telah ada</Typography>
-                  )}
+                <Typography>Hasil Perangkingan</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <div style={{ height: 310, width: '100%' }}>
+                  <DataGrid
+                    rows={finalData ? finalData : []}
+                    columns={columns}
+                    pageSize={pageSize}
+                    onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+                    rowsPerPageOptions={[5, 10, 20]}
+                    pagination
+                    disableSelectionOnClick
+                    getRowId={(row) => row.lecturer.id_lecturer}
+                  />
+                </div>
+
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 2,
+                    mt: 2,
+                  }}
+                >
+                  <Typography>
+                    Pembimbing 1 : {first?.name_lecturer}{' '}
+                  </Typography>
+                  <Typography>
+                    Pembimbing 2 : {second?.name_lecturer}{' '}
+                  </Typography>
+                  <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+                    <Button
+                      onClick={handleSubmit}
+                      variant="contained"
+                      disabled={data?.length !== 0}
+                    >
+                      Submit
+                    </Button>
+                    {data?.length !== 0 && data !== undefined && (
+                      <Typography>Hasil telah ada</Typography>
+                    )}
+                  </Box>
                 </Box>
-              </Box>
-            </AccordionDetails>
-          </Accordion>
+              </AccordionDetails>
+            </Accordion>
+          </Box>
+
+          <Quota />
         </>
       </LayoutAdmin>
     </>
